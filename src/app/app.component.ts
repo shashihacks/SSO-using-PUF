@@ -40,7 +40,8 @@ export class AppComponent implements OnInit {
     // console.log(this.db.collection('users').get().subscribe(res => console.log(res)))
     console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
+        console.log(doc.data(), "got")
+        // console.log(`${doc.id} => ${doc.data()}`);
       });
     }));
   }
