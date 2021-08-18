@@ -19,16 +19,6 @@ export class AppComponent implements OnInit {
   constructor(private accountService: AccountService, private db: AngularFirestore) {
 
 
-    // this.db.collection("users").add({
-    //   first: "Ada",
-    //   last: "Lovelace",
-    //   born: 1815
-    // }).then(reponse => {
-    //   console.log(reponse)
-    // })
-    // this.items = this.db.collection('users').valueChanges();
-    // console.log(this.items, "items")
-
   }
 
   logout() {

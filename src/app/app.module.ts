@@ -17,7 +17,13 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+// import { BrowserModule } from '@angular/platform-browser';
 
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { fakeBackendProvider } from './helpers/fake-backend';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+JwtInterceptor
 console.log(environment)
 
 @NgModule({
@@ -29,6 +35,7 @@ console.log(environment)
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     BrowserAnimationsModule,
@@ -37,7 +44,13 @@ console.log(environment)
     FormsModule, ReactiveFormsModule
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

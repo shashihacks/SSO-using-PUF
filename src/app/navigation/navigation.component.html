@@ -17,8 +17,8 @@
                 <a class="nav-link">Opinions</a>
             </li>
         </ul>
-        <!-- <ul class="navbar-nav nav-flex-icons">
-            <li class="nav-item waves-light" mdbWavesEffect>
+        <ul class="navbar-nav nav-flex-icons">
+            <!-- <li class="nav-item waves-light" mdbWavesEffect>
                 <a class="nav-link">
                     <mdb-icon fab icon="facebook-f"></mdb-icon>
                 </a>
@@ -27,13 +27,13 @@
                 <a class="nav-link">
                     <mdb-icon fab icon="twitter"></mdb-icon>
                 </a>
-            </li>
-            <li class="nav-item waves-light" mdbWavesEffect>
-                <a class="nav-link">
-                    <mdb-icon fab icon="instagram"></mdb-icon>
+            </li> -->
+            <li class="nav-item waves-light" mdbWavesEffect *ngIf=this.isLoggedIn>
+                <a class="nav-link" (click)="onLogout()">
+                    Logout
                 </a>
             </li>
-        </ul> -->
+        </ul>
     </links>
 </mdb-navbar>
 <!-- Main -->
