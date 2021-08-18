@@ -28,7 +28,7 @@
                     <mdb-icon fab icon="twitter"></mdb-icon>
                 </a>
             </li> -->
-            <li class="nav-item waves-light" mdbWavesEffect *ngIf=this.isLoggedIn>
+            <li class="nav-item waves-light" mdbWavesEffect *ngIf=this.currentUser>
                 <a class="nav-link" (click)="onLogout()">
                     Logout
                 </a>

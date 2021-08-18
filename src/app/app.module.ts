@@ -21,17 +21,21 @@ import { CommonModule } from '@angular/common';
 // import { BrowserModule } from '@angular/platform-browser';
 
 import { JwtInterceptor } from './helpers/jwt.interceptor';
-import { fakeBackendProvider } from './helpers/fake-backend';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-JwtInterceptor
-console.log(environment)
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { fakeBackendProvider } from './helpers';
+import { SettingsComponent } from './settings/settings.component';
+import { HomeComponent } from './home/home.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NavigationComponent
+    NavigationComponent,
+    SettingsComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -41,12 +45,14 @@ console.log(environment)
     BrowserAnimationsModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule,
+    HttpClientModule,
+
 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
     fakeBackendProvider

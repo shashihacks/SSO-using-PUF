@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../models/user';
+import { AuthenticationService } from '../services';
 import { AccountService } from '../services/account.service';
 
 @Component({
@@ -8,16 +11,22 @@ import { AccountService } from '../services/account.service';
 })
 export class NavigationComponent implements OnInit {
   isLoggedIn: boolean = false
-  constructor(private accountService: AccountService) {
+  currentUser: User
+  constructor(private accountService: AccountService,
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {
     this.isLoggedIn = this.accountService.loggedInStatus
     console.log(this.isLoggedIn, "from nav")
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   ngOnInit(): void {
   }
 
   onLogout() {
-    console.log("log out clicked")
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

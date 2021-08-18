@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../services';
 import { AccountService } from '../services/account.service';
 import { LocalStorageService } from '../services/local-storage.service';
-
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,11 +16,23 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   loggedInSubscription: Subscription;
+  loginForm: FormGroup;
 
+  returnUrl: string;
+  error = '';
   constructor(
-    private router: Router,
-    private formBuilder: FormBuilder, private accountService: AccountService, private storageService: LocalStorageService) { }
 
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {
+
+
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: ['', Validators.required],
@@ -31,28 +44,33 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
 
-    console.log(this.form.value)
-    const { email } = this.form.value
-    // this.accountService.loginUser(this.form.value)
-    this.loggedInSubscription = this.accountService.loginUser(this.form.value).subscribe(document => {
-      console.log(document.exists)
-      if (document.exists) {
+    this.submitted = true;
 
-        this.accountService.loggedInStatus = true
-        this.storageService.setCookie(this.form.value)
+    console.log(this.f)
+    this.loading = true;
+    this.authenticationService.login(this.f.email.value, this.f.password.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          console.log(data)
+          // this.router.navigate([this.returnUrl]);
+          this.route.queryParams.subscribe(params => {
+            console.log(params)
+            const { returnUrl } = params
+            if (returnUrl && params)
+              this.router.navigate([returnUrl])
+            else
+              this.router.navigate([this.returnUrl])
 
-        this.router.navigate(['/'])
-      }
-      else
-        this.accountService.loggedInStatus = false
-    })
-    console.log(this.accountService.loggedInStatus)
-
-
+          })
+        },
+        error => {
+          this.error = error;
+          this.loading = false;
+        });
   }
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    this.loggedInSubscription.unsubscribe()
-  }
+
+
 }
+
+

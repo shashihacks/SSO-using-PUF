@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+// import { AuthenticationService } from './_services';
 
-
+import { Router } from '@angular/router';
+import { User } from './models/user';
+import { AuthenticationService } from './services';
 // Required for side-effects
 
 @Component({
@@ -14,15 +17,21 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'sso-using-puf';
   user = false
+  currentUser: User;
 
-
-  constructor(private accountService: AccountService, private db: AngularFirestore) {
-
+  constructor(private accountService: AccountService, private db: AngularFirestore,
+    private authenticationService: AuthenticationService,
+    private router: Router,
+  ) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    console.log(this.currentUser, "currentUser")
 
   }
 
-  logout() {
 
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
