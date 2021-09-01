@@ -26,6 +26,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { fakeBackendProvider } from './helpers';
 import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
+import { IdpComponent } from './idp/idp.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { HomeComponent } from './home/home.component';
     RegisterComponent,
     NavigationComponent,
     SettingsComponent,
-    HomeComponent
+    HomeComponent,
+    IdpComponent
   ],
   imports: [
     BrowserModule,

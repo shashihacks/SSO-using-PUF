@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   loggedInSubscription: Subscription;
   loginForm: FormGroup;
 
-  returnUrl: string;
+  returnUrl: string = '/';
   error = '';
   constructor(
 
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
 
     if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/via_idp']);
     }
   }
   ngOnInit(): void {
@@ -56,11 +56,12 @@ export class LoginComponent implements OnInit {
           // this.router.navigate([this.returnUrl]);
           this.route.queryParams.subscribe(params => {
             console.log(params)
+
             const { returnUrl } = params
             if (returnUrl && params)
               this.router.navigate([returnUrl])
             else
-              this.router.navigate([this.returnUrl])
+              this.router.navigate(['/settings'])
 
           })
         },
