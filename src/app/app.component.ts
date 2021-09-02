@@ -37,12 +37,12 @@ export class AppComponent implements OnInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     // console.log(this.db.collection('users').get().subscribe(res => console.log(res)))
-    console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data(), "got")
-        // console.log(`${doc.id} => ${doc.data()}`);
-      });
-    }));
+    // console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.data(), "got")
+    //     // console.log(`${doc.id} => ${doc.data()}`);
+    //   });
+    // }));
   }
 
 

@@ -34,15 +34,6 @@ export class AccountService {
     }).catch((error) => {
       console.error("Error adding document", error)
     });
-    // this.db.collection("users").add({
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   phone,
-    //   password
-    // }).then(reponse => {
-    //   console.log(reponse)
-    // })
 
   }
 

@@ -32,11 +32,21 @@ export class LoginComponent implements OnInit {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/via_idp']);
     }
+
+
   }
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
+    })
+
+
+
+    this.route.queryParams.subscribe(params => {
+      // if (params[this.returnUrl])
+      const { returnUrl } = params
+      console.log(returnUrl)
     })
 
   }
@@ -58,8 +68,20 @@ export class LoginComponent implements OnInit {
             console.log(params)
 
             const { returnUrl } = params
-            if (returnUrl && params)
-              this.router.navigate([returnUrl])
+            if (returnUrl && params) {
+              console.log(returnUrl, typeof (returnUrl))
+              if (returnUrl.includes('redirectUrl')) {
+                console.log("yes contains")
+                let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
+
+                console.log(url)
+                window.location.href = url + '?userdata=shashi@gmail.com'
+              }
+
+            }
+
+
+            // this.router.navigate([returnUrl])
             else
               this.router.navigate(['/settings'])
 

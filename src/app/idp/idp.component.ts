@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FakeBackendInterceptor } from '../helpers';
 import { AuthenticationService } from '../services';
 
 @Component({
