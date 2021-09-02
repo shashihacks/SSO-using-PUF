@@ -58,42 +58,86 @@ export class LoginComponent implements OnInit {
 
     console.log(this.f)
     this.loading = true;
-    this.authenticationService.login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          console.log(data)
-          // this.router.navigate([this.returnUrl]);
-          this.route.queryParams.subscribe(params => {
-            console.log(params)
 
-            const { returnUrl } = params
-            if (returnUrl && params) {
-              console.log(returnUrl, typeof (returnUrl))
-              if (returnUrl.includes('redirectUrl')) {
-                console.log("yes contains")
-                let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
+    let data = this.authenticationService.dblogin(this.f.email.value, this.f.password.value)
 
-                console.log(url)
-                window.location.href = url + '?userdata=shashi@gmail.com'
-              }
+    this.authenticationService.currentUser.subscribe(userObject => {
+
+
+      if (userObject) {
+        this.route.queryParams.subscribe(params => {
+          console.log(params)
+
+          const { returnUrl } = params
+          if (returnUrl && params) {
+            console.log(returnUrl, typeof (returnUrl))
+            if (returnUrl.includes('redirectUrl')) {
+              console.log("yes contains")
+              let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
+
+              console.log(url)
+              window.location.href = url + '?userdata=shashi@gmail.com'
+            }
+            else {
 
             }
+            this.router.navigate([returnUrl])
+
+          }
+          else {
+            console.log("navigating to...")
+            this.router.navigate(['/home'])
+          }
 
 
-            // this.router.navigate([returnUrl])
-            else
-              this.router.navigate(['/settings'])
+        })
+      }
 
-          })
-        },
-        error => {
-          this.error = error;
-          this.loading = false;
-        });
+
+    })
+
+
+
+
+    // console.log(data, "data on login")
+
+    //   this.authenticationService.dblogin(this.f.email.value, this.f.password.value)
+    //     .pipe(first())
+    //     .subscribe(
+    //       data => {
+    //         console.log(data)
+    //         // this.router.navigate([this.returnUrl]);
+    //         this.route.queryParams.subscribe(params => {
+    //           console.log(params)
+
+    //           const { returnUrl } = params
+    //           if (returnUrl && params) {
+    //             console.log(returnUrl, typeof (returnUrl))
+    //             if (returnUrl.includes('redirectUrl')) {
+    //               console.log("yes contains")
+    //               let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
+
+    //               console.log(url)
+    //               window.location.href = url + '?userdata=shashi@gmail.com'
+    //             }
+
+    //           }
+
+
+    //           // this.router.navigate([returnUrl])
+    //           else
+    //             this.router.navigate(['/settings'])
+
+    //         })
+    //       },
+    //       error => {
+    //         this.error = error;
+    //         this.loading = false;
+    //       });
+    // }
+
+
   }
-
-
 }
 
 

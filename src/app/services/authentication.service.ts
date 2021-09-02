@@ -40,19 +40,22 @@ export class AuthenticationService {
             }));
     }
 
-    async dblogin(username: string, password: string) {
+    dblogin(username: string, password: string) {
         const email = username
         const pass = password
         console.log(email, pass)
 
+        let userdata: any
+        let docRef = this.db.collection("users").doc(email);
 
-        var docRef = this.db.collection("users").doc(email);
-
-        docRef.get().subscribe((doc) => {
+        return docRef.get().subscribe((doc) => {
             if (doc.exists) {
-                let data = doc.data()
-                if (data['password'] === pass) {
+                userdata = doc.data()
+                if (userdata['password'] === pass) {
+                    localStorage.setItem('currentUser', JSON.stringify(userdata));
+                    this.currentUserSubject.next(userdata)
                     console.log("success")
+                    return userdata
                 }
                 else {
                     console.log('invalid pass')
@@ -62,16 +65,17 @@ export class AuthenticationService {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
+            return userdata
         })
 
 
-        console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                if (doc.data()['email'] == 'shashisoft@outlook.com')
-                    console.log(doc.data(), "got")
-                // console.log(`${doc.id} => ${doc.data()}`);
-            });
-        }));
+        // console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
+        //     querySnapshot.forEach((doc) => {
+        //         if (doc.data()['email'] == 'shashisoft@outlook.com')
+        //             console.log(doc.data(), "got")
+        //         // console.log(`${doc.id} => ${doc.data()}`);
+        //     });
+        // }));
     }
 
     logout() {
