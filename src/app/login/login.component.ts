@@ -6,6 +6,8 @@ import { AuthenticationService } from '../services';
 import { AccountService } from '../services/account.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { first } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
     private authenticationService: AuthenticationService
   ) {
 
@@ -51,6 +54,18 @@ export class LoginComponent implements OnInit {
 
   }
   get f() { return this.form.controls; }
+
+
+
+
+
+  myLoginTest() {
+    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', };
+    const body = { title: 'Angular POST Request Example' };
+    this.http.post<any>(`${environment.apiUrl}/api/auth`, body, { headers }).subscribe(data => {
+      console.log(data)
+    });
+  }
 
   onSubmit() {
 
@@ -95,47 +110,6 @@ export class LoginComponent implements OnInit {
 
 
     })
-
-
-
-
-    // console.log(data, "data on login")
-
-    //   this.authenticationService.dblogin(this.f.email.value, this.f.password.value)
-    //     .pipe(first())
-    //     .subscribe(
-    //       data => {
-    //         console.log(data)
-    //         // this.router.navigate([this.returnUrl]);
-    //         this.route.queryParams.subscribe(params => {
-    //           console.log(params)
-
-    //           const { returnUrl } = params
-    //           if (returnUrl && params) {
-    //             console.log(returnUrl, typeof (returnUrl))
-    //             if (returnUrl.includes('redirectUrl')) {
-    //               console.log("yes contains")
-    //               let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
-
-    //               console.log(url)
-    //               window.location.href = url + '?userdata=shashi@gmail.com'
-    //             }
-
-    //           }
-
-
-    //           // this.router.navigate([returnUrl])
-    //           else
-    //             this.router.navigate(['/settings'])
-
-    //         })
-    //       },
-    //       error => {
-    //         this.error = error;
-    //         this.loading = false;
-    //       });
-    // }
-
 
   }
 }
