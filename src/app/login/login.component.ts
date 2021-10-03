@@ -8,6 +8,9 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+
+import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -65,6 +68,8 @@ export class LoginComponent implements OnInit {
     this.http.post<any>(`${environment.apiUrl}/api/auth`, body, { headers }).subscribe(data => {
       console.log(data)
     });
+
+
   }
 
   onSubmit() {

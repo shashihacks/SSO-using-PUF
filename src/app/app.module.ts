@@ -28,6 +28,12 @@ import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
 import { IdpComponent } from './idp/idp.component';
 
+//JWT module
+
+import { JwtModule } from '@auth0/angular-jwt';
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -49,6 +55,11 @@ import { IdpComponent } from './idp/idp.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     FormsModule, ReactiveFormsModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+      }
+    })
 
 
   ],
