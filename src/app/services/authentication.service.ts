@@ -26,7 +26,15 @@ export class AuthenticationService {
 
     login(username: string, password: string) {
 
-        this.dblogin(username, password)
+        // this.dblogin(username, password)
+
+
+        return this.http.post(`${environment.apiUrl}/api/login`, { "username": "Kyle" }).subscribe(response => {
+            console.log(response, "from server")
+            localStorage.setItem('accessToken', response['accessToken']);
+            localStorage.setItem('refreshToken', response['refreshToken']);
+        })
+
 
 
         return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { username, password })

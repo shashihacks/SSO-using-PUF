@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string = '/';
   error = '';
   constructor(
-
+    private accountService: AccountService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -63,16 +63,23 @@ export class LoginComponent implements OnInit {
 
 
   myLoginTest() {
-    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', };
-    const body = { title: 'Angular POST Request Example' };
-    this.http.post<any>(`${environment.apiUrl}/api/auth`, body, { headers }).subscribe(data => {
-      console.log(data)
-    });
+    // const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', };
+    // const body = { title: 'Angular POST Request Example' };
+    // this.http.post<any>(`${environment.apiUrl}/api/auth`, body, { headers }).subscribe(data => {
+    //   console.log(data)
+    // });
 
 
+
+    this.http.post(`${environment.apiUrl}/api/login`, { "username": "Kyle" }).subscribe(response => {
+      console.log(response, "from server")
+    })
   }
 
   onSubmit() {
+
+
+
 
     this.submitted = true;
 

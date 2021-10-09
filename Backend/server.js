@@ -57,7 +57,7 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   // Authenticate User
 
   const username = req.body.username;
