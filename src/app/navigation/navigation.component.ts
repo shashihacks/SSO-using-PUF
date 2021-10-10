@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
-import { AuthenticationService } from '../services';
+import { AuthenticationService, UserService } from '../services';
 import { AccountService } from '../services/account.service';
 
 @Component({
@@ -14,10 +14,10 @@ export class NavigationComponent implements OnInit {
   currentUser: User
   constructor(private accountService: AccountService,
     private router: Router,
+    private userService: UserService,
     private authenticationService: AuthenticationService
   ) {
     this.isLoggedIn = this.accountService.loggedInStatus
-    console.log(this.isLoggedIn, "from nav")
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
@@ -29,4 +29,9 @@ export class NavigationComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+
+  getPosts() {
+    console.log("getPosts")
+    this.userService.getPosts()
+  }
 }

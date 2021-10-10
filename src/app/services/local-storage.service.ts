@@ -27,7 +27,7 @@ export class LocalStorageService {
   }
 
   getToken() {
-    return localStorage.getItem('auth_token')
+    return localStorage.getItem('accessToken')
   }
 
 }

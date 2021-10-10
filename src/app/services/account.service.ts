@@ -14,7 +14,7 @@ export class AccountService {
   status
   constructor(private db: AngularFirestore) {
 
-    this.status = localStorage.getItem('auth_token')
+    this.status = localStorage.getItem('accessToken')
     // console.log(this.status, "status check", localStorage.getItem('auth_token'))
     if (this.status == null)
       this.loggedInStatus = false

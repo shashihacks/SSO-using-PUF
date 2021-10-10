@@ -12,15 +12,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+    private currentUserSubject: BehaviorSubject<any>;
+    public currentUser: Observable<any>;
     public returnUrl: string
     constructor(private http: HttpClient, private router: Router, private db: AngularFirestore) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUserSubject = new BehaviorSubject(localStorage.getItem('accessToken'));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
-    public get currentUserValue(): User {
+    public get currentUserValue() {
         return this.currentUserSubject.value;
     }
 
@@ -32,6 +32,7 @@ export class AuthenticationService {
         return this.http.post(`${environment.apiUrl}/api/login`, { "username": "Kyle" }).subscribe(response => {
             console.log(response, "from server")
             localStorage.setItem('accessToken', response['accessToken']);
+            this.currentUserSubject.next(response['accessToken']);
             localStorage.setItem('refreshToken', response['refreshToken']);
         })
 
@@ -88,7 +89,8 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         this.currentUserSubject.next(null);
     }
 }

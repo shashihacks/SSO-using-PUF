@@ -21,8 +21,9 @@ const posts = [
   },
 ];
 
-app.get("/posts", authenticateToken, (req, res) => {
+app.get("/api/posts", authenticateToken, (req, res) => {
   console.log("posts requested");
+  // console.log(req);
   res.json(posts.filter((post) => post.username === req.user.name));
 });
 
@@ -62,7 +63,7 @@ app.post("/api/login", (req, res) => {
 
   const username = req.body.username;
   const user = { name: username };
-
+  console.log("user login requested");
   const accessToken = generateAccessToken(user);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
   refreshTokens.push(refreshToken);
@@ -70,7 +71,7 @@ app.post("/api/login", (req, res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
 }
 
 app.listen(3000);

@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
     console.log(this.f)
     this.loading = true;
 
-    let data = this.authenticationService.dblogin(this.f.email.value, this.f.password.value)
+    let data = this.authenticationService.login(this.f.email.value, this.f.password.value)
 
     this.authenticationService.currentUser.subscribe(userObject => {
 
