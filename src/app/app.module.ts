@@ -31,6 +31,7 @@ import { IdpComponent } from './idp/idp.component';
 //JWT module
 
 import { JwtModule } from '@auth0/angular-jwt';
+import { LoginWithPufComponent } from './login-with-puf/login-with-puf.component';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -43,7 +44,8 @@ export function tokenGetter() {
     NavigationComponent,
     SettingsComponent,
     HomeComponent,
-    IdpComponent
+    IdpComponent,
+    LoginWithPufComponent
   ],
   imports: [
     BrowserModule,

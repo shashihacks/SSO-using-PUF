@@ -94,14 +94,12 @@ export class LoginComponent implements OnInit {
       if (userObject) {
         this.route.queryParams.subscribe(params => {
           console.log(params)
-
           const { returnUrl } = params
           if (returnUrl && params) {
             console.log(returnUrl, typeof (returnUrl))
             if (returnUrl.includes('redirectUrl')) {
               console.log("yes contains")
               let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
-
               console.log(url)
               window.location.href = url + '?userdata=shashi@gmail.com'
             }
@@ -109,20 +107,18 @@ export class LoginComponent implements OnInit {
 
             }
             this.router.navigate([returnUrl])
-
           }
           else {
             console.log("navigating to...")
             this.router.navigate(['/home'])
           }
-
-
         })
       }
-
-
     })
 
+
+
+    this.form.reset()
   }
 }
 
