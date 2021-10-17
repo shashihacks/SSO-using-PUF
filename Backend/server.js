@@ -90,13 +90,38 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
   // Authenticate User
 
   const { email, password } = req.body;
   console.log(email, password);
   const user = { name: email, password: password };
   console.log("user login requested");
+
+  let userExists = await accountExists(user);
+  console.log(userExists, "executed");
+  if (userExists) {
+    const accessToken = generateAccessToken(user);
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+    refreshTokens.push(refreshToken);
+    res
+      .status(200)
+      .send({ accessToken: accessToken, refreshToken: refreshToken });
+  } else {
+    res.json("Invalid Username or Password");
+  }
+});
+
+app.post("/api/login-with-puf", (req, res) => {
+  // Authenticate User
+
+  const { puf_token } = req.body;
+  console.log(puf_token);
+  const { username } = generateUsername();
+  console.log(username, "generated for user");
+  const user = { name: username, puf_token: puf_token };
+  if (!accountExists(puf_token)) registerUser(puf_token);
+  console.log("user login requested with PUF");
   const accessToken = generateAccessToken(user);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
   refreshTokens.push(refreshToken);
@@ -107,4 +132,25 @@ function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
 }
 
+function generateUsername() {
+  let username = "user_" + (Math.random() + 1).toString(36).substring(5);
+  return { username };
+}
+
+async function accountExists(user) {
+  //check from db
+  console.log(user, "checking user");
+  const { name: email, password } = user;
+  const userRef = db.collection("users").doc(email.toString());
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    console.log("No such document!");
+    return false;
+  } else {
+    console.log("Document data:", doc.data());
+    const { email: dbEmail, password: dbPassword } = doc.data();
+    if (dbEmail == email && dbPassword == password) return true;
+    else return false;
+  }
+}
 app.listen(3000);

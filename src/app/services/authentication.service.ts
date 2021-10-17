@@ -31,22 +31,22 @@ export class AuthenticationService {
 
         return this.http.post(`${environment.apiUrl}/api/login`, { "email": email, "password": password }).subscribe(response => {
             console.log(response, "from server")
+
             localStorage.setItem('accessToken', response['accessToken']);
             this.currentUserSubject.next(response['accessToken']);
             localStorage.setItem('refreshToken', response['refreshToken']);
         })
+    }
 
+    loginWithPuf(puf_token: string) {
 
-
-        // return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { username, password })
-        //     .pipe(map(user => {
-        //         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        //         localStorage.setItem('currentUser', JSON.stringify(user));
-        //         this.currentUserSubject.next(user);
-
-
-        //         return user;
-        //     }));
+        return this.http.post(`${environment.apiUrl}/api/login-with-puf`, { "puf_token": puf_token }).subscribe(response => {
+            console.log(response, "from server")
+            localStorage.setItem('accessToken', response['accessToken']);
+            this.currentUserSubject.next(response['accessToken']);
+            localStorage.setItem('refreshToken', response['refreshToken']);
+            return response
+        })
     }
 
     dblogin(username: string, password: string) {

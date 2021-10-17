@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../services';
 @Component({
   selector: 'app-login-with-puf',
   templateUrl: './login-with-puf.component.html',
@@ -13,7 +14,7 @@ export class LoginWithPufComponent implements OnInit {
   loggedInSubscription: Subscription;
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,) { }
+  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -30,7 +31,9 @@ export class LoginWithPufComponent implements OnInit {
   onSubmit() {
     console.log(this.f)
     console.log(this.f.token.value)
-
+    const token = this.f.token.value
+    let response = this.authenticationService.loginWithPuf(token)
+    console.log(response)
     this.form.reset()
   }
 }
