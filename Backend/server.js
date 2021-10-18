@@ -45,15 +45,6 @@ const posts = [
 
 app.get("/api/posts", authenticateToken, async (req, res) => {
   console.log("posts requested");
-  // const docRef = db.collection("users").doc("alovelace");
-
-  // await docRef.set({
-  //   first: "Ada",
-  //   last: "Lovelace",
-  //   born: 1815,
-  // });
-  // console.log("data send");
-  // console .log(req);
   console.log(req.user);
   res.json(posts.filter((post) => post.username === req.user.name));
 });
@@ -86,7 +77,8 @@ app.post("/token", (req, res) => {
   });
 });
 
-app.delete("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
+  console.log(req.body);
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
   res.sendStatus(204);
 });

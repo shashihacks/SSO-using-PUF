@@ -15,16 +15,16 @@ const routes: Routes = [
   { path: 'login-with-puf', component: LoginWithPufComponent, },
   { path: 'register', component: RegisterComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'via_idp/:id/:url', component: IdpComponent, canActivate: [AuthGuard] },
-  { path: 'via_idp', component: IdpComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent },
+  { path: 'via_client/:id/:url', component: IdpComponent, canActivate: [AuthGuard] },
+  { path: 'via_client', component: IdpComponent, canActivate: [AuthGuard] },
 
   // { path: 'via_idp/:id', component: IdpComponent, },
 
 
 
   // otherwise redirect to home
-  { path: '**', redirectTo: 'via_idp' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

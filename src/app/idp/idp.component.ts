@@ -16,8 +16,8 @@ export class IdpComponent implements OnInit {
     console.log(this.authenticationService.returnUrl, "from idp")
     this.router.queryParams.subscribe(params => {
       console.log(params)
-      const { redirectUrl } = params
-      window.location.href = redirectUrl + "?userdata=shashi@gmail.com"
+      // const { redirectUrl } = params
+      // window.location.href = redirectUrl + "?userdata=shashi@gmail.com"
 
     })
 

@@ -35,9 +35,9 @@ export class LoginComponent implements OnInit {
   ) {
 
 
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/via_idp']);
-    }
+    // if (this.authenticationService.currentUserValue) {
+    //   this.router.navigate(['/via_idp']);
+    // }
 
 
   }
@@ -68,33 +68,33 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f.email.value, this.f.password.value)
     this.authenticationService.currentUser.subscribe(userObject => {
-      if (userObject) {
-        this.route.queryParams.subscribe(params => {
-          console.log(params)
-          const { returnUrl } = params
-          if (returnUrl && params) {
-            console.log(returnUrl, typeof (returnUrl))
-            if (returnUrl.includes('redirectUrl')) {
-              console.log("yes contains")
-              let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
-              console.log(url)
-              window.location.href = url + '?userdata=shashi@gmail.com'
-            }
-            else {
+      // if (userObject) {
+      //   this.route.queryParams.subscribe(params => {
+      //     console.log(params)
+      //     const { returnUrl } = params
+      //     if (returnUrl && params) {
+      //       console.log(returnUrl, typeof (returnUrl))
+      //       if (returnUrl.includes('redirectUrl')) {
+      //         console.log("yes contains")
+      //         let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
+      //         console.log(url)
+      //         window.location.href = url + '?userdata=shashi@gmail.com'
+      //       }
+      //       else {
 
-            }
-            this.router.navigate([returnUrl])
-          }
-          else {
-            console.log("navigating to...")
-            this.router.navigate(['/home'])
-          }
-        })
-      }
+      //       }
+      //       this.router.navigate([returnUrl])
+      //     }
+      //     else {
+      //       console.log("navigating to...")
+      //       this.router.navigate(['/home'])
+      //     }
+      //   })
+      // }
     })
 
 
-
+    // this.router.navigate(['/home'])
     this.form.reset()
   }
 }

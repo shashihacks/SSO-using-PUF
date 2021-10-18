@@ -50,7 +50,10 @@ export class AuthenticationService {
             localStorage.setItem('accessToken', response['accessToken']);
             this.currentUserSubject.next(response['accessToken']);
             localStorage.setItem('refreshToken', response['refreshToken']);
-            return response
+            if (response['accessToken'] && response['refreshToken'])
+                return true
+            else
+                return false
         })
     }
 
@@ -58,8 +61,18 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        this.currentUserSubject.next(null);
+        let refreshToken = localStorage.getItem('refreshToken');
+        this.http.post(`${environment.apiUrl}/api/logout`, { "token": refreshToken }).subscribe(response => {
+            console.log(response, "from server")
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+
+            this.currentUserSubject.next(null);
+            this.router.navigateByUrl('/login')
+        })
+
+
     }
+
+
 }
