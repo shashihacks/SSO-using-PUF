@@ -11,7 +11,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-
+    public loginResponse: string = ''
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
     public returnUrl: string
@@ -29,12 +29,17 @@ export class AuthenticationService {
         // this.dblogin(username, password)
 
 
-        return this.http.post(`${environment.apiUrl}/api/login`, { "email": email, "password": password }).subscribe(response => {
-            console.log(response, "from server")
+        this.http.post(`${environment.apiUrl}/api/login`, { "email": email, "password": password }).subscribe(response => {
 
-            localStorage.setItem('accessToken', response['accessToken']);
-            this.currentUserSubject.next(response['accessToken']);
-            localStorage.setItem('refreshToken', response['refreshToken']);
+            if (response['accessToken'] && response['accessToken'] != '') {
+                localStorage.setItem('accessToken', response['accessToken']);
+                this.currentUserSubject.next(response['accessToken']);
+                localStorage.setItem('refreshToken', response['refreshToken']);
+                this.loginResponse = response['text']
+            }
+            else
+                this.loginResponse = response['text']
+
         })
     }
 
@@ -49,43 +54,7 @@ export class AuthenticationService {
         })
     }
 
-    dblogin(username: string, password: string) {
-        const email = username
-        const pass = password
-        console.log(email, pass)
 
-        let userdata: any
-        let docRef = this.db.collection("users").doc(email);
-
-        return docRef.get().subscribe((doc) => {
-            if (doc.exists) {
-                userdata = doc.data()
-                if (userdata['password'] === pass) {
-                    localStorage.setItem('currentUser', JSON.stringify(userdata));
-                    this.currentUserSubject.next(userdata)
-                    console.log("success")
-                    return userdata
-                }
-                else {
-                    console.log('invalid pass')
-                }
-
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-            return userdata
-        })
-
-
-        // console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
-        //     querySnapshot.forEach((doc) => {
-        //         if (doc.data()['email'] == 'shashisoft@outlook.com')
-        //             console.log(doc.data(), "got")
-        //         // console.log(`${doc.id} => ${doc.data()}`);
-        //     });
-        // }));
-    }
 
     logout() {
         // remove user from local storage to log user out

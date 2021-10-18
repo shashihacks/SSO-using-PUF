@@ -34,6 +34,10 @@
             <!-- Sign in button -->
             <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
 
+            <p *ngIf="authenticationService.loginResponse" class="text-danger">
+                {{this.authenticationService.loginResponse}}
+            </p>
+
             <!-- Register -->
             <p>Not a member?
                 <a [routerLink]="['/register']" routerLinkActive="router-link-active">Register</a>
@@ -44,10 +48,3 @@
     </div>
 
 </div>
-
-<div class="btn btn-primary" (click)="myLoginTest()">Logintest</div>
-<!-- <div class="status" *ngIf="this.loggedIn">
-    loggedIn
-</div> -->
-
-<!-- Default form login -->

@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService
   ) {
 
 
@@ -62,35 +62,12 @@ export class LoginComponent implements OnInit {
 
 
 
-  myLoginTest() {
-    // const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', };
-    // const body = { title: 'Angular POST Request Example' };
-    // this.http.post<any>(`${environment.apiUrl}/api/auth`, body, { headers }).subscribe(data => {
-    //   console.log(data)
-    // });
-
-
-
-    this.http.post(`${environment.apiUrl}/api/login`, { "username": "Kyle" }).subscribe(response => {
-      console.log(response, "from server")
-    })
-  }
 
   onSubmit() {
-
-
-
-
     this.submitted = true;
-
-    console.log(this.f)
     this.loading = true;
-
-    let data = this.authenticationService.login(this.f.email.value, this.f.password.value)
-
+    this.authenticationService.login(this.f.email.value, this.f.password.value)
     this.authenticationService.currentUser.subscribe(userObject => {
-
-
       if (userObject) {
         this.route.queryParams.subscribe(params => {
           console.log(params)

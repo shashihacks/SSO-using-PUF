@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const firebase = require("firebase");
 const { sortAndDeduplicateDiagnostics } = require("typescript");
+const { response } = require("express");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzS8MmxAoTIZkh5hDj5kaEyIURWNpO3_w",
@@ -104,37 +105,18 @@ app.post("/api/login", async (req, res) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
     refreshTokens.push(refreshToken);
-    res
-      .status(200)
-      .send({ accessToken: accessToken, refreshToken: refreshToken });
+    res.status(200).send({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      text: "Login Success",
+    });
   } else {
-    res.json("Invalid Username or Password");
+    res.send({ text: "Invalid Email or Password" });
   }
-});
-
-app.post("/api/login-with-puf", (req, res) => {
-  // Authenticate User
-
-  const { puf_token } = req.body;
-  console.log(puf_token);
-  const { username } = generateUsername();
-  console.log(username, "generated for user");
-  const user = { name: username, puf_token: puf_token };
-  if (!accountExists(puf_token)) registerUser(puf_token);
-  console.log("user login requested with PUF");
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-  refreshTokens.push(refreshToken);
-  res.json({ accessToken: accessToken, refreshToken: refreshToken });
 });
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
-}
-
-function generateUsername() {
-  let username = "user_" + (Math.random() + 1).toString(36).substring(5);
-  return { username };
 }
 
 async function accountExists(user) {
@@ -152,5 +134,79 @@ async function accountExists(user) {
     if (dbEmail == email && dbPassword == password) return true;
     else return false;
   }
+}
+
+// PUF Login
+
+app.post("/api/login-with-puf", async (req, res) => {
+  // Authenticate User
+
+  const { puf_token } = req.body;
+  console.log(puf_token);
+  const { username } = generateUsername();
+  console.log(username, "generated for user");
+  const user = { name: username, puf_token: puf_token };
+  console.log("user login requested with PUF");
+
+  if (tokenExists(puf_token)) {
+    // let accountDetails = getAccount(puf_token);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+    refreshTokens.push(refreshToken);
+    res.json({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    });
+  } else {
+    let registrationResponse = await registerAccount(puf_token);
+    if (registrationResponse) {
+      const accessToken = generateAccessToken(user);
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+      refreshTokens.push(refreshToken);
+      res.json({
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        accountDetails,
+      });
+    } else {
+      res.send({ text: "Unable to create account" });
+    }
+  }
+});
+
+function generateUsername() {
+  let username = "user_" + (Math.random() + 1).toString(36).substring(5);
+  return username;
+}
+
+async function tokenExists(puf_token) {
+  const userRef = db.collection("users").doc(puf_token.toString());
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    console.log("No such document!");
+    return false;
+  } else {
+    console.log("Document data:", doc.data());
+
+    return doc.data();
+  }
+}
+
+async function registerAccount(puf_token) {
+  const data = {
+    pufToken: puf_token,
+    email: "",
+    firstName: generateUsername(),
+    phone: "",
+  };
+
+  console.log(puf_token, data);
+  const userRef = db.collection("users").doc(puf_token.toString());
+  const res = await userRef.set(data);
+
+  // setTimeout(() => {
+  //   console.log(res, "response from register Account");
+  // }, 3000);
+  if (res) return true;
 }
 app.listen(3000);
