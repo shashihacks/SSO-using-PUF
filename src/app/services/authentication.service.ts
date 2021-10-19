@@ -33,8 +33,9 @@ export class AuthenticationService {
 
             if (response['accessToken'] && response['accessToken'] != '') {
                 localStorage.setItem('accessToken', response['accessToken']);
-                this.currentUserSubject.next(response['accessToken']);
                 localStorage.setItem('refreshToken', response['refreshToken']);
+
+                this.currentUserSubject.next(response['accessToken']);
                 this.loginResponse = response['text']
             }
             else
@@ -48,8 +49,9 @@ export class AuthenticationService {
         return this.http.post(`${environment.apiUrl}/api/login-with-puf`, { "puf_token": puf_token }).subscribe(response => {
             console.log(response, "from server")
             localStorage.setItem('accessToken', response['accessToken']);
-            this.currentUserSubject.next(response['accessToken']);
             localStorage.setItem('refreshToken', response['refreshToken']);
+            this.currentUserSubject.next(response['accessToken']);
+
             if (response['accessToken'] && response['refreshToken'])
                 return true
             else

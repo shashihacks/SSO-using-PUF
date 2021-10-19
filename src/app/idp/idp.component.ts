@@ -11,15 +11,48 @@ export class IdpComponent implements OnInit {
 
   constructor(
 
-    private router: ActivatedRoute, private authenticationService: AuthenticationService) {
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService) {
 
-    console.log(this.authenticationService.returnUrl, "from idp")
-    this.router.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       console.log(params)
-      // const { redirectUrl } = params
-      // window.location.href = redirectUrl + "?userdata=shashi@gmail.com"
 
+      //if already logged In
+      this.authenticationService.currentUser.subscribe(userObject => {
+        console.log(Object.keys(userObject))
+        console.log(userObject)
+        if (userObject != '' && userObject != undefined && Object.keys(userObject).length !== 0) {
+          console.log(userObject)
+          this.route.queryParams.subscribe(params => {
+            console.log(params)
+            const { redirectUrl, clientId } = params
+            if (redirectUrl && clientId) {
+              window.location.href = redirectUrl + '?userdata=shashi@gmail.com'
+            }
+            else {
+              console.log("navigating to...")
+              this.router.navigate(['/home'])
+            }
+          })
+        }
+
+
+
+      })
+
+
+
+      this.router.navigateByUrl['/login?']
     })
+
+
+
+
+
+
+
+
 
   }
 

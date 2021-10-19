@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
 
   returnUrl: string = '/';
   error = '';
+  reDirection: boolean = false;
   constructor(
     private accountService: AccountService,
     private formBuilder: FormBuilder,
@@ -33,12 +34,6 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     public authenticationService: AuthenticationService
   ) {
-
-
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(['/via_idp']);
-    // }
-
 
   }
   ngOnInit(): void {
@@ -50,9 +45,12 @@ export class LoginComponent implements OnInit {
 
 
     this.route.queryParams.subscribe(params => {
-      // if (params[this.returnUrl])
-      const { returnUrl } = params
-      console.log(returnUrl)
+      const { redirectUrl, clientId } = params
+      console.log(redirectUrl, clientId)
+      if (redirectUrl && clientId)
+        this.reDirection = true
+
+
     })
 
   }
@@ -67,34 +65,32 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.loading = true;
     this.authenticationService.login(this.f.email.value, this.f.password.value)
-    this.authenticationService.currentUser.subscribe(userObject => {
-      // if (userObject) {
-      //   this.route.queryParams.subscribe(params => {
-      //     console.log(params)
-      //     const { returnUrl } = params
-      //     if (returnUrl && params) {
-      //       console.log(returnUrl, typeof (returnUrl))
-      //       if (returnUrl.includes('redirectUrl')) {
-      //         console.log("yes contains")
-      //         let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
-      //         console.log(url)
-      //         window.location.href = url + '?userdata=shashi@gmail.com'
-      //       }
-      //       else {
+    if (this.reDirection)
+      this.route.queryParams.subscribe(params => {
+        console.log(params)
 
-      //       }
-      //       this.router.navigate([returnUrl])
-      //     }
-      //     else {
-      //       console.log("navigating to...")
-      //       this.router.navigate(['/home'])
-      //     }
-      //   })
-      // }
-    })
+        //if user is coming from with redirectUrl and clientId  
+        this.authenticationService.currentUser.subscribe(userObject => {
+          if (userObject) {
+            this.route.queryParams.subscribe(params => {
+              console.log(params, userObject)
+              const { redirectUrl, clientId } = params
+              if (redirectUrl && clientId) {
+                window.location.href = redirectUrl + '?userdata=shashi@gmail.com'
+              }
+              else {
+                console.log("navigating to...")
+                this.router.navigate(['/home'])
+              }
+            })
+          }
 
 
-    // this.router.navigate(['/home'])
+
+        })
+      })
+
+    this.router.navigate(['/home'])
     this.form.reset()
   }
 }
