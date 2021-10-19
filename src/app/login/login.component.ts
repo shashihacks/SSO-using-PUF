@@ -42,6 +42,11 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     })
 
+    this.authenticationService.currentUser.subscribe(userObject => {
+      if (userObject)
+        this.router.navigate(['/home'])
+    })
+
 
 
     this.route.queryParams.subscribe(params => {
@@ -49,8 +54,6 @@ export class LoginComponent implements OnInit {
       console.log(redirectUrl, clientId)
       if (redirectUrl && clientId)
         this.reDirection = true
-
-
     })
 
   }

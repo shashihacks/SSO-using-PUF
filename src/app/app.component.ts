@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   ngOnInit(): void {
+
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     // console.log(this.db.collection('users').get().subscribe(res => console.log(res)))
