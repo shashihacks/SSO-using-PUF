@@ -75,11 +75,17 @@ export class LoginComponent implements OnInit {
         //if user is coming from with redirectUrl and clientId  
         this.authenticationService.currentUser.subscribe(userObject => {
           if (userObject) {
-            this.route.queryParams.subscribe(params => {
+            this.route.queryParams.subscribe(async params => {
               console.log(params, userObject)
               const { redirectUrl, clientId } = params
               if (redirectUrl && clientId) {
-                window.location.href = redirectUrl + '?userdata=shashi@gmail.com'
+                let userData
+                this.accountService.getUserData().subscribe(data => {
+                  let firstName = data['firstName']
+                  window.location.href = redirectUrl + '?firstName=' + firstName
+                })
+                // if (userData)
+                // window.location.href = redirectUrl + '?userdata=' + firstName
               }
               else {
                 console.log("navigating to...")

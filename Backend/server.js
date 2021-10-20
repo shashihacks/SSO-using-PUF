@@ -59,7 +59,7 @@ function authenticateToken(req, res, next) {
     if (err) return res.sendStatus(403);
 
     req.user = user;
-    console.log(req.user, "extracted from token");
+    // console.log(req.user, "extracted from token");
     next();
   });
 }
@@ -89,10 +89,10 @@ app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
   const user = { name: email, password: password };
-  console.log("user login requested");
+  // console.log("user login requested");
 
   let userExists = await accountExists(user);
-  console.log(userExists, "executed");
+  // console.log(userExists, "executed");
   if (userExists) {
     const accessToken = generateAccessToken(user);
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
@@ -113,7 +113,7 @@ function generateAccessToken(user) {
 
 async function accountExists(user) {
   //check from db
-  console.log(user, "checking user");
+  // console.log(user, "checking user");
   const { name: email, password } = user;
   const userRef = db.collection("users").doc(email.toString());
   const doc = await userRef.get();
@@ -121,7 +121,7 @@ async function accountExists(user) {
     console.log("No such document!");
     return false;
   } else {
-    console.log("Document data:", doc.data());
+    // console.log("Document data:", doc.data());
     const { email: dbEmail, password: dbPassword } = doc.data();
     if (dbEmail == email && dbPassword == password) return true;
     else return false;
@@ -175,10 +175,10 @@ async function getAccount(puf_token) {
   const userRef = db.collection("users").doc(puf_token.toString());
   const doc = await userRef.get();
   if (!doc.exists) {
-    console.log("No such document!");
+    // console.log("No such document!");
     return false;
   } else {
-    console.log("Document data:", doc.data());
+    // console.log("Document data:", doc.data());
 
     return doc.data();
   }
@@ -192,7 +192,7 @@ async function registerAccount(puf_token) {
     phone: "",
   };
 
-  console.log(puf_token, data);
+  // console.log(puf_token, data);
   const userRef = db.collection("users").doc(puf_token.toString());
   const res = await userRef.set(data);
 
@@ -201,4 +201,22 @@ async function registerAccount(puf_token) {
   // }, 3000);
   if (res) return true;
 }
+
+app.post("/api/userdata", authenticateToken, async (req, res) => {
+  console.log("userdata requested");
+  console.log(req.user);
+  const { name } = req.user;
+  //get data from firestore
+  let userData = {};
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    return false;
+  } else {
+    userData = doc.data();
+  }
+  console.log(userData);
+  res.send(userData);
+});
+
 app.listen(3000);

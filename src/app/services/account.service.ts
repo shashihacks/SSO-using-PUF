@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,12 +12,13 @@ export class AccountService {
 
   loggedInStatus: boolean
 
-  status
-  constructor(private db: AngularFirestore) {
+  token
+  subject: Subject<Object>;
+  constructor(private db: AngularFirestore, private http: HttpClient, private router: Router) {
 
-    this.status = localStorage.getItem('accessToken')
+    this.token = localStorage.getItem('accessToken')
     // console.log(this.status, "status check", localStorage.getItem('auth_token'))
-    if (this.status == null)
+    if (this.token == null)
       this.loggedInStatus = false
     else
       this.loggedInStatus = true
@@ -43,13 +45,22 @@ export class AccountService {
     let docRef = this.db.collection("users").doc(email).get(email)
     return docRef
 
-    // docRef.get(email).subscribe(document => {
-    //   if(document.exists)
-    //     this.loggedInStatus = true
-    //   else 
-    //     this.loggedInStatus = false
-    // })
+  }
 
+  getUserData(): Observable<Object> {
+    console.log('account data requested')
+    let userData
+    this.subject = new Subject<Object>();
+
+    this.http.post(`${environment.apiUrl}/api/userdata`, { "token": this.token }).subscribe(response => {
+      console.log(response)
+
+      this.subject.next(response)
+
+    })
+
+    this.subject.subscribe(r => console.log(r))
+    return this.subject.asObservable()
   }
 
 
