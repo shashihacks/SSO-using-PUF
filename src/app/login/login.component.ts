@@ -84,8 +84,6 @@ export class LoginComponent implements OnInit {
                   let firstName = data['firstName']
                   window.location.href = redirectUrl + '?firstName=' + firstName
                 })
-                // if (userData)
-                // window.location.href = redirectUrl + '?userdata=' + firstName
               }
               else {
                 console.log("navigating to...")

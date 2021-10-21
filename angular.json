@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "sso-using-puf"
+  "defaultProject": "sso-using-puf",
+  "cli": {
+    "analytics": false
+  }
 }

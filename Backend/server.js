@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const firebase = require("firebase");
 const { sortAndDeduplicateDiagnostics } = require("typescript");
@@ -216,6 +217,18 @@ app.post("/api/userdata", authenticateToken, async (req, res) => {
     userData = doc.data();
   }
   console.log(userData);
+
+  const key = "abcdeg";
+
+  let HMAC = crypto
+    .createHmac("sha1", key)
+    .update(JSON.stringify(userData))
+    .digest("hex");
+  let HMAC2 = crypto
+    .createHmac("sha1", key)
+    .update(JSON.stringify(userData))
+    .digest("hex");
+  console.log(HMAC, "HMac", HMAC2);
   res.send(userData);
 });
 
