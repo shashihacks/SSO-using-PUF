@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-idp',
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../services';
 export class IdpComponent implements OnInit {
 
   constructor(
-
+    private accountService: AccountService,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService) {
@@ -28,7 +29,13 @@ export class IdpComponent implements OnInit {
             console.log(params)
             const { redirectUrl, clientId } = params
             if (redirectUrl && clientId) {
-              window.location.href = redirectUrl + '?userdata=shashi@gmail.com'
+
+              this.accountService.getUserData().subscribe(data => {
+                let firstName = data['firstName']
+                console.log(data)
+                window.location.href = redirectUrl + '?firstName=' + firstName
+              })
+
             }
             else {
               console.log("navigating to...")
@@ -43,7 +50,7 @@ export class IdpComponent implements OnInit {
 
 
 
-      this.router.navigateByUrl['/login?']
+      this.router.navigateByUrl['/login']
     })
 
 

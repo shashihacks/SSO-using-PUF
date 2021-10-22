@@ -224,11 +224,8 @@ app.post("/api/userdata", authenticateToken, async (req, res) => {
     .createHmac("sha1", key)
     .update(JSON.stringify(userData))
     .digest("hex");
-  let HMAC2 = crypto
-    .createHmac("sha1", key)
-    .update(JSON.stringify(userData))
-    .digest("hex");
-  console.log(HMAC, "HMac", HMAC2);
+  console.log(HMAC, "HMac");
+  userData["HMAC"] = HMAC;
   res.send(userData);
 });
 
