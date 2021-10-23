@@ -216,13 +216,19 @@ app.post("/api/userdata", authenticateToken, async (req, res) => {
   } else {
     userData = doc.data();
   }
+
+  const key = "abcdef";
+  delete userData["phone"];
+  delete userData["password"];
   console.log(userData);
-
-  const key = "abcdeg";
-
+  let myOrderedUserObject = {
+    firstName: userData["firstName"],
+    lastName: userData["lastName"],
+    email: userData["email"],
+  };
   let HMAC = crypto
     .createHmac("sha1", key)
-    .update(JSON.stringify(userData))
+    .update(JSON.stringify(myOrderedUserObject))
     .digest("hex");
   console.log(HMAC, "HMac");
   userData["HMAC"] = HMAC;

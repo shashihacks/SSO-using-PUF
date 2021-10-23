@@ -21,7 +21,6 @@ export class IdpComponent implements OnInit {
 
       //if already logged In
       this.authenticationService.currentUser.subscribe(userObject => {
-        console.log(Object.keys(userObject))
         console.log(userObject)
         if (userObject != '' && userObject != undefined && Object.keys(userObject).length !== 0) {
           console.log(userObject)
@@ -32,8 +31,9 @@ export class IdpComponent implements OnInit {
 
               this.accountService.getUserData().subscribe(data => {
                 let firstName = data['firstName']
+                let lastName = data['lastName']
                 console.log(data)
-                window.location.href = redirectUrl + '?firstName=' + firstName
+                window.location.href = redirectUrl + '?firstName=' + firstName + '&lastName=' + lastName + '&email=' + data['email'] + '&HMAC=' + data['HMAC']
               })
 
             }
