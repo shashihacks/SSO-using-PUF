@@ -15,7 +15,7 @@
                 <a class="nav-link">Posts</a>
             </li>
             <li class="nav-item waves-light" mdbWavesEffect *ngIf=this.currentUser>
-                <a class="nav-link">Settings</a>
+                <a class="nav-link" [routerLink]="['/settings']">Settings</a>
             </li>
         </ul>
         <ul class="navbar-nav nav-flex-icons">

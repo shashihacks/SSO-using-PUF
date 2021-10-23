@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         console.log(params)
 
-        //if user is coming from with redirectUrl and clientId  
+        //if user is coming  with redirectUrl and clientId  
         this.authenticationService.currentUser.subscribe(userObject => {
           if (userObject) {
             this.route.queryParams.subscribe(async params => {

@@ -47,12 +47,13 @@ export class AccountService {
 
   }
 
+  //For SSO - fetch custom information
   getUserData(): Observable<Object> {
     console.log('account data requested')
     let userData
     this.subject = new Subject<Object>();
 
-    this.http.post(`${environment.apiUrl}/api/userdata`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/sso-userdata`, { "token": this.token }).subscribe(response => {
       console.log(response)
 
       this.subject.next(response)
@@ -63,6 +64,24 @@ export class AccountService {
     return this.subject.asObservable()
   }
 
+
+  //For displaying user info in settings
+
+  getUserInfo(): Observable<Object> {
+    console.log('account data requested')
+    let userData
+    let userInfoSubject = new Subject<Object>();
+
+    this.http.post(`${environment.apiUrl}/api/userinfo`, { "token": this.token }).subscribe(response => {
+      console.log(response)
+
+      userInfoSubject.next(response)
+
+    })
+
+
+    return userInfoSubject.asObservable()
+  }
 
 
 

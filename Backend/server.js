@@ -24,7 +24,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-const docRef = db.collection("users").doc("alovelace");
+
 // Initialize Firebase
 
 app.use(bodyParser.json());
@@ -203,7 +203,8 @@ async function registerAccount(puf_token) {
   if (res) return true;
 }
 
-app.post("/api/userdata", authenticateToken, async (req, res) => {
+//Custom data for SSO
+app.post("/api/sso-userdata", authenticateToken, async (req, res) => {
   console.log("userdata requested");
   console.log(req.user);
   const { name } = req.user;
@@ -232,6 +233,25 @@ app.post("/api/userdata", authenticateToken, async (req, res) => {
     .digest("hex");
   console.log(HMAC, "HMac");
   userData["HMAC"] = HMAC;
+  res.send(userData);
+});
+
+//settingspage
+app.post("/api/userinfo", authenticateToken, async (req, res) => {
+  console.log("userdata requested");
+  console.log(req.user);
+  const { name } = req.user;
+  //get data from firestore
+  let userData = {};
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    return false;
+  } else {
+    userData = doc.data();
+  }
+  delete userData["password"];
+  console.log(userData);
   res.send(userData);
 });
 
