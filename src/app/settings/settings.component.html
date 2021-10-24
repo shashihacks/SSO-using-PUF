@@ -1,7 +1,7 @@
 <p>User has been logged in!</p>
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 offset-1">
             <div class="list-group">
                 <a class="list-group-item list-group-item-action" [ngClass]="item=='Profile' ? 'active text-white' : ''"
                     (click)="
@@ -22,11 +22,32 @@
                     (click)="changeItem('Settings')">Settings</a>
             </div>
         </div>
-        <div class="col-md-9">
-            <ng-template [ngIf]="item">
-                <div class="lessons-list">
-                    Contents {{item}}
+
+        <div class="col-md-5 offset-1">
+            <ng-template [ngIf]="item=='Profile'">
+
+                <div class="col-md-6 col-sm-12 col-lg-12 align-content-center">
+                    <form class="text-center border border-light  pt-0" [formGroup]="form" (ngSubmit)="save()">
+
+                        <p class="h4 mb-4">Edit your profile</p>
+
+                        <!-- Email -->
+                        <input formControlName="firstName" type="text" id="firstName" class="form-control mb-2"
+                            placeholder="First name">
+                        <input formControlName="lastName" type="text" id="lastName" class="form-control mb-2"
+                            placeholder="Last name">
+                        <input formControlName="email" type="email" id="defaultLoginFormEmail" class="form-control mb-2"
+                            placeholder="E-mail">
+
+
+
+                        <!-- Sign in button -->
+                        <button mdbBtn color="info" block="true" class="my-4" type="submit">Save</button>
+
+
+                    </form>
                 </div>
+
             </ng-template>
         </div>
     </div>
