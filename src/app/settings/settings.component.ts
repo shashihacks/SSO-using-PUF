@@ -7,7 +7,7 @@ import { AccountService } from '../services/account.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-
+  item: string = 'Profile'
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -16,4 +16,8 @@ export class SettingsComponent implements OnInit {
     })
   }
 
+
+  changeItem(name) {
+    this.item = name
+  }
 }

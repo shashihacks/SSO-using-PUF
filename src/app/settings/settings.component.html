@@ -1,1 +1,33 @@
 <p>User has been logged in!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" [ngClass]="item=='Profile' ? 'active text-white' : ''"
+                    (click)="
+                    changeItem('Profile')">
+                    Profile
+                </a>
+                <a class="list-group-item list-group-item-action"
+                    [ngClass]="item=='Authentication' ? 'active text-white' : ''"
+                    (click)="changeItem('Authentication')">Authentication</a>
+                <a class="list-group-item list-group-item-action"
+                    [ngClass]="item=='Applications' ? 'active text-white' : ''"
+                    (click)="changeItem('Applications')">Applications</a>
+                <a class="list-group-item list-group-item-action"
+                    [ngClass]="item=='Security' ? 'active text-white' : ''"
+                    (click)="changeItem('Security')">Security</a>
+                <a class="list-group-item list-group-item-action"
+                    [ngClass]="item=='Settings' ? 'active text-white' : ''"
+                    (click)="changeItem('Settings')">Settings</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <ng-template [ngIf]="item">
+                <div class="lessons-list">
+                    Contents {{item}}
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>r
