@@ -45,7 +45,8 @@ export function tokenGetter() {
     SettingsComponent,
     HomeComponent,
     IdpComponent,
-    LoginWithPufComponent
+    LoginWithPufComponent,
+
   ],
   imports: [
     BrowserModule,

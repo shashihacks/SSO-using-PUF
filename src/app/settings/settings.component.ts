@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AccountService } from '../services/account.service';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -10,17 +10,22 @@ import { AccountService } from '../services/account.service';
 export class SettingsComponent implements OnInit {
   form: FormGroup;
   item: string = 'Profile'
-  user: Object
+  user: any = {
+    firstName: "Alain",
+    job: "dev"
+  }
+
   constructor(private accountService: AccountService, private formBuilder: FormBuilder,) {
 
-
+    this.accountService.getUserInfo().subscribe(info => {
+      this.user = info
+      console.log(this.user)
+    })
 
   }
 
   ngOnInit(): void {
-    this.accountService.getUserInfo().subscribe(info => {
-      this.user = info
-    })
+
 
     this.form = this.formBuilder.group({
       email: ['', Validators.required],
@@ -28,6 +33,8 @@ export class SettingsComponent implements OnInit {
       firstName: ['', Validators.required],
 
       lastName: ['', Validators.required],
+      phone: ['', Validators.required],
+      address: ['', Validators.required]
 
     })
   }
@@ -39,6 +46,6 @@ export class SettingsComponent implements OnInit {
   get f() { return this.form.controls; }
 
   save() {
-
+    console.log(this.user)
   }
 }

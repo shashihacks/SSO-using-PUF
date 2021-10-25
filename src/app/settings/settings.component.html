@@ -31,18 +31,42 @@
 
                         <p class="h4 mb-4">Edit your profile</p>
 
-                        <!-- Email -->
-                        <input formControlName="firstName" type="text" id="firstName" class="form-control mb-2"
-                            placeholder="First name">
-                        <input formControlName="lastName" type="text" id="lastName" class="form-control mb-2"
-                            placeholder="Last name">
-                        <input formControlName="email" type="email" id="defaultLoginFormEmail" class="form-control mb-2"
-                            placeholder="E-mail">
+                        <div class="form-group">
+                            <div class="form-row mb-4">
+                                <div class="col">
+                                    <!-- First name -->
+
+
+                                    <input [(ngModel)]="user.firstName" formControlName="firstName" type="text"
+                                        id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+                                </div>
+
+                                <div class="col">
+                                    <!-- Last name -->
+                                    <input [(ngModel)]="user.lastName" formControlName="lastName" type="text"
+                                        id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- E-mail -->
+                        <input [(ngModel)]="user.email" formControlName="email" type="email"
+                            id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+
+
+                        <!-- Phone number -->
+                        <input [(ngModel)]="user.phone" formControlName="phone" type="text" id="Phone"
+                            class="form-control mb-4" placeholder="Phone number" aria-describedby="Phone">
+
+                        <textarea [(ngModel)]="user.address" formControlName="address" type="text" placeholder="Address"
+                            id="address" class="mb-4 md-textarea md-textarea-auto form-control" mdbInput></textarea>
 
 
 
-                        <!-- Sign in button -->
-                        <button mdbBtn color="info" block="true" class="my-4" type="submit">Save</button>
+                        <button mdbBtn color="red" block="" class="my-4" type="submit">Cancel</button>
+
+                        <button mdbBtn color="info" block="" class="my-4" type="submit">Update</button>
 
 
                     </form>
@@ -51,4 +75,7 @@
             </ng-template>
         </div>
     </div>
-</div>r
+</div>
+
+<input [(ngModel)]="user.name">
+<!-- {{user | json}} -->
