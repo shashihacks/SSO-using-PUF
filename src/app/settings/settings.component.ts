@@ -13,7 +13,7 @@ export class SettingsComponent implements OnInit {
   form: FormGroup;
   item: string = 'Profile'
   user: any = {}
-
+  submitted = false;
   constructor(
     private router: Router,
     private toaster: ToastrService,
@@ -30,13 +30,11 @@ export class SettingsComponent implements OnInit {
 
 
     this.form = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      firstName: ['', Validators.required],
-
+      email: ['', Validators.required, Validators.email],
+      firstName: ['', [Validators.required]],
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
-      address: ['', Validators.required]
+      address: ['',]
 
     })
 
@@ -51,6 +49,10 @@ export class SettingsComponent implements OnInit {
   get f() { return this.form.controls; }
 
   save() {
+    this.submitted = true
+    console.log(this.form)
+    if (this.form.invalid)
+      return
     this.accountService.updateUser(this.user).subscribe(response => {
       if (response && response['sendStatus'] == 201 && response['text']) {
         this.toaster.success(response['text'])

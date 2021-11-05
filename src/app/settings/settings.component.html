@@ -38,13 +38,23 @@
 
 
                                     <input [(ngModel)]="user.firstName" formControlName="firstName" type="text"
-                                        id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+                                        id="defaultRegisterFormFirstName" class="form-control" placeholder="First name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+                                    <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                                    </div>
                                 </div>
 
                                 <div class="col">
                                     <!-- Last name -->
                                     <input [(ngModel)]="user.lastName" formControlName="lastName" type="text"
-                                        id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+                                        id="defaultRegisterFormLastName" class="form-control" placeholder="Last name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+
+
+                                    <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.firstName.errors.required">Last Name is required</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,15 +62,26 @@
 
                         <!-- E-mail -->
                         <input [(ngModel)]="user.email" formControlName="email" type="email"
-                            id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+                            id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail"
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.firstName.email.required">Email is required</div>
+                        </div>
 
 
                         <!-- Phone number -->
                         <input [(ngModel)]="user.phone" formControlName="phone" type="text" id="Phone"
-                            class="form-control mb-4" placeholder="Phone number" aria-describedby="Phone">
+                            class="form-control mb-4" placeholder="Phone number" aria-describedby="Phone"
+                            [ngClass]="{ 'is-invalid': submitted && f.phone.errors }">
+
+                        <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                            <div *ngIf="f.phone.required">Phone is required</div>
+                        </div>
 
                         <textarea [(ngModel)]="user.address" formControlName="address" type="text" placeholder="Address"
-                            id="address" class="mb-4 md-textarea md-textarea-auto form-control" mdbInput></textarea>
+                            id="address" class="mb-4 md-textarea md-textarea-auto form-control" mdbInput>
+                            ></textarea>
 
 
 
