@@ -27,7 +27,7 @@ import { fakeBackendProvider } from './helpers';
 import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
 import { IdpComponent } from './idp/idp.component';
-
+import { ToastrModule } from 'ngx-toastr'
 //JWT module
 
 import { JwtModule } from '@auth0/angular-jwt';
@@ -62,7 +62,8 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
       }
-    })
+    }),
+    ToastrModule.forRoot()
 
 
   ],

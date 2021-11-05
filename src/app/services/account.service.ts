@@ -78,9 +78,20 @@ export class AccountService {
       userInfoSubject.next(response)
 
     })
-
-
     return userInfoSubject.asObservable()
+  }
+
+
+  updateUser(user): Observable<Object> {
+    console.log('update user info requested')
+    let userDataSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/updateuser`, { "token": this.token, user }).subscribe(response => {
+      console.log(response)
+      userDataSubject.next(response)
+
+    })
+
+    return userDataSubject.asObservable();
   }
 
 

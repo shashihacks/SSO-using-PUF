@@ -255,4 +255,14 @@ app.post("/api/userinfo", authenticateToken, async (req, res) => {
   res.send(userData);
 });
 
+app.post("/api/updateuser", authenticateToken, async (req, res) => {
+  console.log("hit /updateuser");
+  console.log(req.body.user);
+  let updateUserObject = req.body.user;
+  const { email } = req.body.user;
+
+  await db.collection("users").doc(email).update(updateUserObject);
+  res.send({ sendStatus: 201, text: "User update success" });
+});
+
 app.listen(3000);

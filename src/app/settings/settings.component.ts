@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -10,12 +12,12 @@ import { FormsModule } from '@angular/forms';
 export class SettingsComponent implements OnInit {
   form: FormGroup;
   item: string = 'Profile'
-  user: any = {
-    firstName: "Alain",
-    job: "dev"
-  }
+  user: any = {}
 
-  constructor(private accountService: AccountService, private formBuilder: FormBuilder,) {
+  constructor(
+    private router: Router,
+    private toaster: ToastrService,
+    private accountService: AccountService, private formBuilder: FormBuilder,) {
 
     this.accountService.getUserInfo().subscribe(info => {
       this.user = info
@@ -37,6 +39,9 @@ export class SettingsComponent implements OnInit {
       address: ['', Validators.required]
 
     })
+
+    this.form.get('email').disable();
+
   }
 
 
@@ -46,6 +51,17 @@ export class SettingsComponent implements OnInit {
   get f() { return this.form.controls; }
 
   save() {
+    this.accountService.updateUser(this.user).subscribe(response => {
+      if (response && response['sendStatus'] == 201 && response['text']) {
+        this.toaster.success(response['text'])
+        this.router.navigate(['/home'])
+      }
+    })
     console.log(this.user)
+
+  }
+
+  cancel() {
+    this.router.navigate(['/home'])
   }
 }
