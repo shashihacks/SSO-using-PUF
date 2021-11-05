@@ -28,10 +28,13 @@ import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
 import { IdpComponent } from './idp/idp.component';
 import { ToastrModule } from 'ngx-toastr'
+
 //JWT module
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginWithPufComponent } from './login-with-puf/login-with-puf.component';
+import { AuthSettingsComponent } from './settings/auth-settings/auth-settings.component';
+
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -46,6 +49,7 @@ export function tokenGetter() {
     HomeComponent,
     IdpComponent,
     LoginWithPufComponent,
+    AuthSettingsComponent
 
   ],
   imports: [

@@ -4,6 +4,8 @@ import { AccountService } from '../services/account.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { AuthSettingsComponent } from './auth-settings/auth-settings.component';
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -56,7 +58,7 @@ export class SettingsComponent implements OnInit {
     this.accountService.updateUser(this.user).subscribe(response => {
       if (response && response['sendStatus'] == 201 && response['text']) {
         this.toaster.success(response['text'])
-        this.router.navigate(['/home'])
+
       }
     })
     console.log(this.user)
