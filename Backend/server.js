@@ -265,4 +265,26 @@ app.post("/api/updateuser", authenticateToken, async (req, res) => {
   res.send({ sendStatus: 201, text: "User update success" });
 });
 
+app.post("/api/authsettings", authenticateToken, async (req, res) => {
+  let updateUserObject = req.body.user;
+  const { name } = req.user;
+  console.log(req.user, "get settings");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    return false;
+  } else {
+    userData = doc.data();
+  }
+
+  console.log(userData);
+  if (userData.settings === null || userData.settings === undefined) {
+    console.log("empty settings");
+    userData["settings"] = {};
+  }
+
+  console.log("settings", userData.settings);
+  res.send({ sendStatus: 200, data: userData.settings });
+});
+
 app.listen(3000);

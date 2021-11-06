@@ -7,6 +7,7 @@ import { IdpComponent } from './idp/idp.component';
 import { LoginWithPufComponent } from './login-with-puf/login-with-puf.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthSettingsComponent } from './settings/auth-settings/auth-settings.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
@@ -18,6 +19,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'via_client/:id/:url', component: IdpComponent, canActivate: [AuthGuard] },
   { path: 'via_client', component: IdpComponent, canActivate: [AuthGuard] },
+
+  // { path: 'settings/authentication', component: AuthSettingsComponent, canActivate: [AuthGuard] },
 
   // { path: 'via_idp/:id', component: IdpComponent, },
 

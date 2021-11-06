@@ -1,1 +1,36 @@
-<p>auth-settings works!</p>
+<h3 class="mb-4">How do you want to login ?</h3>
+
+<div class="row d-flex justify-content-center">
+    <form class="form-group  justify-content-center" [formGroup]="form" (ngSubmit)="update()">
+        <div class="form-row mb-2 ">
+            <div class="col">
+                <!-- First name -->
+
+                <div class="form-check">
+                    <input mdbCheckbox class="form-check-input" type="checkbox" value="" id="emailAndPass"
+                        formControlName="emailAndPass" />
+                    <label class="form-check-label" for="emailAndPass">
+                        Email and Password
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row mb-4">
+            <div class="col">
+                <div class="form-check ">
+                    <input mdbCheckbox formControlName="pufResponse" class="form-check-input" type="checkbox" value=""
+                        id="pufResponse" />
+                    <label class="form-check-label" for="pufResponse">
+                        PUF response
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
+
+        <button mdbBtn color="success" block="" class="my-4" type="submit">Update</button>
+    </form>
+</div>

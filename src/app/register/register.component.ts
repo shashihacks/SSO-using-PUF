@@ -33,4 +33,5 @@ export class RegisterComponent implements OnInit {
     console.log(this.form.value)
     this.accountService.registerAccount(this.form.value)
   }
+
 }

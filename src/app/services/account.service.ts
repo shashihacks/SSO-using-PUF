@@ -94,6 +94,19 @@ export class AccountService {
     return userDataSubject.asObservable();
   }
 
+  getUserAuthSettings(): Observable<Object> {
+    console.log("Authsettings requested")
+    let userAuthSettingsSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/authsettings`, { "token": this.token }).subscribe(response => {
+      console.log("response from server", response)
+      userAuthSettingsSubject.next(response)
+
+    })
+
+    return userAuthSettingsSubject.asObservable()
+
+  }
+
 
 
 
