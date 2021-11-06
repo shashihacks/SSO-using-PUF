@@ -109,7 +109,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60h" });
 }
 
 async function accountExists(user) {
@@ -280,7 +280,7 @@ app.post("/api/authsettings", authenticateToken, async (req, res) => {
   console.log(userData);
   if (userData.settings === null || userData.settings === undefined) {
     console.log("empty settings");
-    userData["settings"] = {};
+    userData["settings"] = { emailAndPass: "", pufResponse: "" };
   }
 
   console.log("settings", userData.settings);

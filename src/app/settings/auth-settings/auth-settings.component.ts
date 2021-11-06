@@ -10,8 +10,12 @@ import { AccountService } from 'src/app/services/account.service';
 export class AuthSettingsComponent implements OnInit {
 
   form: FormGroup;
+  authSettings: Object = {}
+  constructor(private formBuilder: FormBuilder, private accountService: AccountService) {
 
-  constructor(private formBuilder: FormBuilder, private accountService: AccountService) { }
+
+
+  }
 
   ngOnInit(): void {
 
@@ -23,7 +27,13 @@ export class AuthSettingsComponent implements OnInit {
 
     this.accountService.getUserAuthSettings().subscribe(response => {
       console.log("settings", response)
+      if (response == null || response == undefined)
+        this.authSettings = {}
+      else
+        this.authSettings = response
     })
+
+
   }
 
   get f() { return this.form.controls; }
