@@ -122,8 +122,34 @@ export class AccountService {
 
 
 
+  addApplication(appData) {
+    let appArray =
+      console.log("Add application data requested")
+    let addAppSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/add-app`, { "token": this.token, appData }).subscribe(response => {
+      console.log("response from server", response)
+      addAppSubject.next(response)
+
+    })
+
+    return addAppSubject.asObservable()
+  }
 
 
+
+
+  getApplications() {
+    console.log("get application data requested")
+    let getAppSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/get-apps`, { "token": this.token }).subscribe(response => {
+      console.log("response from server", response)
+      getAppSubject.next(response)
+
+    })
+
+    return getAppSubject.asObservable()
+
+  }
 
 
   ngOnDestroy(): void {

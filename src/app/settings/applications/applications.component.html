@@ -1,8 +1,38 @@
+<form class="text-center border border-light  pt-0 mb-4" [formGroup]="form" (ngSubmit)="add()">
+
+    <p class="h3 mb-4">Add Applications</p>
+
+    <div class="form-group">
+        <div class="form-outline mb-2">
+            <input formControlName="name" placeholder="Application name" type="text" id="domainName"
+                class="form-control" />
+            <!-- <label class="form-label" for="typeURL">URL input</label> -->
+        </div>
+
+        <div class="form-outline mb-2">
+            <input formControlName="url" placeholder="Domain URL" type="url" id="typeURL" class="form-control" />
+            <!-- <label class="form-label" for="typeURL">URL input</label> -->
+        </div>
+
+    </div>
+
+    <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
+
+    <button mdbBtn color="success" block="" class="my-4" type="submit">Add</button>
+</form>
+
+
+
+
+
+<div class="h4 mb-2">Allowed applications</div>
 <div class="card">
-    <div class="card-header">Featured</div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item"> Service provider </li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+    <ul class="list-group list-group-flush" *ngFor="let app of apps">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{app.name}}
+            <a href="{{app.url}}" target="_blank" mdbTooltip="Visit {{app.name}} " mdbRipple
+                class="btn btn-primary float-end" style="background-color: #ec4a89 !important;padding: .44rem 2.14rem;"
+                role="button"><i class="fab fa-dribbble"></i></a>
+        </li>
     </ul>
 </div>

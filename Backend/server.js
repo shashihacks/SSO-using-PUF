@@ -309,4 +309,43 @@ app.post("/api/updateauthsettings", authenticateToken, async (req, res) => {
   }
 });
 
+app.post("/api/add-app", authenticateToken, async (req, res) => {
+  let updateUserObject = req.body.user;
+  const { name } = req.user;
+  console.log(req.user, "get settings");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  console.log(req.body, "received settings");
+  if (!doc.exists) {
+    res.send({ sendStatus: 404, text: "User not found, update failed" });
+    return false;
+  } else {
+    userData = doc.data();
+    const response = await userRef.update({
+      "settings.applications": firebase.firestore.FieldValue.arrayUnion(
+        req.body["appData"]
+      ),
+    });
+
+    res.send({ sendStatus: 200, text: "update success" });
+  }
+});
+
+app.post("/api/get-apps", authenticateToken, async (req, res) => {
+  let updateUserObject = req.body.user;
+  const { name } = req.user;
+  console.log(req.user, "get settings");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  console.log(req.body, "received settings");
+  if (!doc.exists) {
+    res.send({ sendStatus: 404, text: "User not found, update failed" });
+    return false;
+  } else {
+    userData = doc.data();
+    const applications = userData["settings"]["applications"];
+    res.send({ sendStatus: 200, data: applications });
+  }
+});
+
 app.listen(3000);
