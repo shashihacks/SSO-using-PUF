@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthSettingsComponent } from './auth-settings/auth-settings.component';
-
+import { ApplicationsComponent } from './applications/applications.component';
+ApplicationsComponent
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
