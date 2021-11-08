@@ -278,13 +278,35 @@ app.post("/api/authsettings", authenticateToken, async (req, res) => {
   }
 
   console.log(userData);
-  if (userData.settings === null || userData.settings === undefined) {
+  if (!userData.settings) {
     console.log("empty settings");
-    userData["settings"] = { emailAndPass: "", pufResponse: "" };
+    userData["settings"] = { emailAndPass: true, pufResponse: true };
   }
 
   console.log("settings", userData.settings);
   res.send({ sendStatus: 200, data: userData.settings });
+});
+
+app.post("/api/updateauthsettings", authenticateToken, async (req, res) => {
+  let updateUserObject = req.body.user;
+  const { name } = req.user;
+  console.log(req.user, "get settings");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  console.log(req.body, "received settings");
+  if (!doc.exists) {
+    res.send({ sendStatus: 404, text: "User not found, update failed" });
+    return false;
+  } else {
+    userData = doc.data();
+
+    // userData["settings"] = req.body["settings"];
+    const response = await userRef.update({
+      settings: req.body["settings"],
+    });
+
+    res.send({ sendStatus: 201, text: "update success" });
+  }
 });
 
 app.listen(3000);

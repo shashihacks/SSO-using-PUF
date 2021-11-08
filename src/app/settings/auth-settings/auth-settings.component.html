@@ -4,11 +4,10 @@
     <form class="form-group  justify-content-center" [formGroup]="form" (ngSubmit)="update()">
         <div class="form-row mb-2 ">
             <div class="col">
-                <!-- First name -->
-
                 <div class="form-check">
                     <input mdbCheckbox class="form-check-input" type="checkbox" value="" id="emailAndPass"
-                        formControlName="emailAndPass" />
+                        formControlName="emailAndPass" [checked]="authSettings['emailAndPass']"
+                        [(ngModel)]="authSettings['emailAndPass']" />
                     <label class="form-check-label" for="emailAndPass">
                         Email and Password
                     </label>
@@ -19,7 +18,8 @@
             <div class="col">
                 <div class="form-check ">
                     <input name=selected mdbCheckbox formControlName="pufResponse" class="form-check-input"
-                        type="checkbox" value="" id="pufResponse" />
+                        type="checkbox" value="" id="pufResponse" [checked]="authSettings['pufResponse']"
+                        [(ngModel)]="authSettings['pufResponse']" />
 
                     <label class="form-check-label" for="pufResponse">
                         PUF response
@@ -31,6 +31,7 @@
 
         <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
 
-        <button mdbBtn color="success" block="" class="my-4" type="submit">Update</button>
+        <button [disabled]="!authSettings['emailAndPass'] && !authSettings['pufResponse']" mdbBtn color="success"
+            block="" class="my-4" type="submit">Update</button>
     </form>
 </div>

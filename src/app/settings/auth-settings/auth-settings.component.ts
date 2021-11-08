@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { Toast, ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 @Component({
   selector: 'app-auth-settings',
@@ -11,7 +12,9 @@ export class AuthSettingsComponent implements OnInit {
 
   form: FormGroup;
   authSettings: Object = {}
-  constructor(private formBuilder: FormBuilder, private accountService: AccountService) {
+  constructor(
+    private toaster: ToastrService,
+    private formBuilder: FormBuilder, private accountService: AccountService) {
 
 
 
@@ -27,10 +30,11 @@ export class AuthSettingsComponent implements OnInit {
 
     this.accountService.getUserAuthSettings().subscribe(response => {
       console.log("settings", response)
+
       if (response == null || response == undefined)
         this.authSettings = {}
       else
-        this.authSettings = response
+        this.authSettings = response['data']
     })
 
 
@@ -41,10 +45,20 @@ export class AuthSettingsComponent implements OnInit {
 
   update() {
     console.log("clicked save")
-    console.log(this.form)
+    console.log(this.form.value)
+    this.accountService.updateAuthSettings(this.form.value).subscribe(response => {
+      if (response['sendStatus'] == 201 && response['text'])
+        this.toaster.success(response['text'])
+      else
+        this.toaster.info('Unable to update')
+
+    })
   }
   cancel() {
     console.log("cancel")
   }
+
+
+
 
 }

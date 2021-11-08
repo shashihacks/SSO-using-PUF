@@ -47,6 +47,11 @@ export class SettingsComponent implements OnInit {
 
   changeItem(name) {
     this.item = name
+    if (this.item == 'Profile')
+      this.accountService.getUserInfo().subscribe(info => {
+        this.user = info
+        console.log(this.user)
+      })
   }
   get f() { return this.form.controls; }
 

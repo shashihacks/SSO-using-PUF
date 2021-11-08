@@ -108,7 +108,17 @@ export class AccountService {
   }
 
 
+  updateAuthSettings(settings) {
+    console.log("Authsettings requested")
+    let updateAuthSettingsSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/updateauthsettings`, { "token": this.token, settings }).subscribe(response => {
+      console.log("response from server", response)
+      updateAuthSettingsSubject.next(response)
 
+    })
+
+    return updateAuthSettingsSubject.asObservable()
+  }
 
 
 
