@@ -123,8 +123,7 @@ export class AccountService {
 
 
   addApplication(appData) {
-    let appArray =
-      console.log("Add application data requested")
+
     let addAppSubject = new Subject<Object>();
     this.http.post(`${environment.apiUrl}/api/add-app`, { "token": this.token, appData }).subscribe(response => {
       console.log("response from server", response)

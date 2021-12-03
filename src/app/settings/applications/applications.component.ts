@@ -22,12 +22,10 @@ export class ApplicationsComponent implements OnInit {
     //   console.log(response, "application")
     //   // this.apps = response['data']
     // })
+    console.log(this.accountService.userSettings['settings']['applications'], "intial")
+    if (Object.keys(this.accountService.userSettings).length === 0 || this.accountService.userSettings['settings']['applications'] === undefined) {
 
-    if (this.accountService.userSettings
-      && Object.keys(this.accountService.userSettings).length === 0
-      && Object.getPrototypeOf(this.accountService.userSettings) === Object.prototype) {
-
-
+      this.apps = []
     }
     else
       this.apps = this.accountService.userSettings['settings']['applications']
@@ -55,7 +53,7 @@ export class ApplicationsComponent implements OnInit {
 
   add() {
     console.log(this.form)
-    this.form.value['id'] = Date.now()
+    // this.form.value['id'] = Date.now()
     this.accountService.addApplication(this.form.value).subscribe(response => {
       if (response['sendStatus'] == 200 && response['text']) {
         this.toaster.success(response['text'])

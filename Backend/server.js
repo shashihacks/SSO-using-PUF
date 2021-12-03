@@ -366,10 +366,12 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
     console.log("appscopy");
     console.log(appsCopy);
 
+    oldName = appsCopy[index].name;
+    oldUrl = appsCopy[index].url;
     appsCopy[index].name = name;
     appsCopy[index].url = url;
-    // delete appsCopy[index];
-    // console.log("updated", appsCopy);
+
+    console.log("name", name, "url:", url);
     let response = await userRef
       .update(
         {
@@ -377,10 +379,24 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
             ...appsCopy
           ),
         },
-        { merge: false }
+        { merge: true }
       )
-      .then(() => {
-        console.log("ediedt");
+      .then(async () => {
+        console.log("thennable");
+      });
+
+    let response2 = await userRef
+      .update(
+        {
+          "settings.applications": firebase.firestore.FieldValue.arrayRemove({
+            name: oldName,
+            url: oldUrl,
+          }),
+        },
+        { merge: true }
+      )
+      .then(async () => {
+        console.log("thennable");
       });
   }
 });
