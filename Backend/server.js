@@ -365,13 +365,23 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
     let appsCopy = doc.data().settings.applications;
     console.log("appscopy");
     console.log(appsCopy);
+
     appsCopy[index].name = name;
     appsCopy[index].url = url;
-    let response = await userRef.set({
-      "settings.applications": firebase.firestore.FieldValue.arrayUnion(
-        ...appsCopy
-      ),
-    });
+    // delete appsCopy[index];
+    // console.log("updated", appsCopy);
+    let response = await userRef
+      .update(
+        {
+          "settings.applications": firebase.firestore.FieldValue.arrayUnion(
+            ...appsCopy
+          ),
+        },
+        { merge: false }
+      )
+      .then(() => {
+        console.log("ediedt");
+      });
   }
 });
 

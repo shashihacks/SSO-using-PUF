@@ -22,8 +22,16 @@ export class ApplicationsComponent implements OnInit {
     //   console.log(response, "application")
     //   // this.apps = response['data']
     // })
-    this.apps = this.accountService.userSettings['settings']['applications']
-    console.log(this.accountService.userSettings, "application")
+
+    if (this.accountService.userSettings
+      && Object.keys(this.accountService.userSettings).length === 0
+      && Object.getPrototypeOf(this.accountService.userSettings) === Object.prototype) {
+
+
+    }
+    else
+      this.apps = this.accountService.userSettings['settings']['applications']
+
 
   }
 
