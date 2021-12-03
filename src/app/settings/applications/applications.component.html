@@ -1,24 +1,29 @@
-<form class="text-center border border-light  pt-0 mb-4" [formGroup]="form" (ngSubmit)="add()">
+<form class="text-center border border-light  pt-0 mb-4" [formGroup]="form">
 
-    <p class="h3 mb-4">Add Applications</p>
+    <p *ngIf="!update" class="h3 mb-4">Add Application</p>
+    <p *ngIf="update" class="h3 mb-4">Edit Application</p>
+
 
     <div class="form-group">
         <div class="form-outline mb-2">
-            <input formControlName="name" placeholder="Application name" type="text" id="domainName"
+            <input #appName formControlName="name" placeholder="Application name" type="text" id="domainName"
                 class="form-control" />
-            <!-- <label class="form-label" for="typeURL">URL input</label> -->
         </div>
 
         <div class="form-outline mb-2">
-            <input formControlName="url" placeholder="Domain URL" type="url" id="typeURL" class="form-control" />
-            <!-- <label class="form-label" for="typeURL">URL input</label> -->
+            <input #appUrl formControlName="url" placeholder="Domain URL" type="url" id="typeURL"
+                class="form-control" />
         </div>
 
     </div>
 
     <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
 
-    <button mdbBtn color="success" block="" class="my-4" type="submit">Add</button>
+
+    <button *ngIf="!update" mdbBtn color="success" block="" class="my-4" type="submit" (click)="add()">Add</button>
+    <button *ngIf="update" mdbBtn block="" class="btn btn-secondary my-4" type="submit"
+        (click)="updateApp(appName.value, appUrl.value)">Update</button>
+
 </form>
 
 
@@ -27,12 +32,22 @@
 
 <div class="h4 mb-2">Allowed applications</div>
 <div class="card">
-    <ul class="list-group list-group-flush" *ngFor="let app of apps">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+    <ul class="list-group list-group-flush" *ngFor="let app of apps; let i=index">
+        <li class="list-group-item">
             {{app.name}}
-            <a href="{{app.url}}" target="_blank" mdbTooltip="Visit {{app.name}} " mdbRipple
-                class="btn btn-primary float-end" style="background-color: #ec4a89 !important;padding: .44rem 2.14rem;"
-                role="button"><i class="fab fa-dribbble"></i></a>
+            <span class="float-end">
+                <a href="{{app.url}}" target="_blank" mdbTooltip="Visit {{app.name}} " mdbRipple
+                    class="btn btn-primary " style="background-color: #ec4a89 !important;padding: .44rem 2.14rem;"
+                    role="button"><i class="fab fa-dribbble"></i></a>
+
+                <a mdbRipple class="btn btn-success" (click)="editApp(i, appName, appUrl);update=true"
+                    style="padding: .44rem 2.14rem;" role="button">Edit</a>
+                <a mdbRipple class="btn btn-danger" style="padding: .44rem 2.14rem;" role="button">Delete</a>
+
+
+            </span>
+
+
         </li>
     </ul>
 </div>

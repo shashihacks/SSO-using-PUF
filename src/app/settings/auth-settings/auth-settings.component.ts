@@ -27,15 +27,10 @@ export class AuthSettingsComponent implements OnInit {
       pufResponse: [],
 
     })
-
-    this.accountService.getUserAuthSettings().subscribe(response => {
-      console.log("settings", response)
-
-      if (response == null || response == undefined)
-        this.authSettings = {}
-      else
-        this.authSettings = response['data']
-    })
+    const { emailAndPass, pufResponse } = this.accountService.userSettings['settings']
+    this.authSettings['emailAndPass'] = emailAndPass
+    this.authSettings['pufResponse'] = pufResponse
+    console.log(this.authSettings, "Auth settings")
 
 
   }

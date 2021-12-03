@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class AccountService {
 
   loggedInStatus: boolean
-
+  userSettings: Object
   token
   subject: Subject<Object>;
   constructor(private db: AngularFirestore, private http: HttpClient, private router: Router) {
@@ -74,7 +74,7 @@ export class AccountService {
 
     this.http.post(`${environment.apiUrl}/api/userinfo`, { "token": this.token }).subscribe(response => {
       console.log(response)
-
+      this.userSettings = response
       userInfoSubject.next(response)
 
     })
@@ -148,6 +148,17 @@ export class AccountService {
     })
 
     return getAppSubject.asObservable()
+
+  }
+
+  updateApp(index, name, url) {
+    let updateAppSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/update-app`, { "token": this.token, data: { name, url, index } }).subscribe(response => {
+      console.log("response from server", response)
+      updateAppSubject.next(response)
+
+    })
+    return updateAppSubject.asObservable()
 
   }
 

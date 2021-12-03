@@ -348,4 +348,31 @@ app.post("/api/get-apps", authenticateToken, async (req, res) => {
   }
 });
 
+app.post("/api/update-app", authenticateToken, async (req, res) => {
+  const { name } = req.user;
+  console.log(req.body.data, "received object");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    res.send({ sendStatus: 404, text: "User not found, update failed" });
+    return false;
+  } else {
+    //update Object
+    // userData = doc.data();
+    const { index, name, url } = req.body.data;
+    let dynNamekey = "settings.applications." + index + ".name";
+    let dynUrlkey = `settings.applications.${index}.url`;
+    let appsCopy = doc.data().settings.applications;
+    console.log("appscopy");
+    console.log(appsCopy);
+    appsCopy[index].name = name;
+    appsCopy[index].url = url;
+    let response = await userRef.set({
+      "settings.applications": firebase.firestore.FieldValue.arrayUnion(
+        ...appsCopy
+      ),
+    });
+  }
+});
+
 app.listen(3000);
