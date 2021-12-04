@@ -17,7 +17,8 @@
 
     </div>
 
-    <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
+    <button mdbBtn color="red" block="" class="my-4" type="submit"
+        (click)="this.form.reset(); this.update=false">Cancel</button>
 
 
     <button *ngIf="!update" mdbBtn color="success" block="" class="my-4" type="submit" (click)="add()">Add</button>
