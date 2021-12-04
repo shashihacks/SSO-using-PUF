@@ -392,4 +392,32 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
   }
 });
 
+app.post("/api/delete-app", authenticateToken, async (req, res) => {
+  const { name } = req.user;
+  console.log(req.body.data, "received object to delete");
+  const userRef = db.collection("users").doc(name);
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    res.send({ sendStatus: 404, text: "User not found, update failed" });
+    return false;
+  } else {
+    const appData = req.body.data;
+    console.log(appData);
+    // appData["id"] = 2;
+    let response2 = await userRef
+      .update(
+        {
+          "settings.applications":
+            firebase.firestore.FieldValue.arrayRemove(appData),
+        },
+        { merge: true }
+      )
+      .then(() => {
+        res.send({ sendStatus: 201, text: "Delete success" });
+      });
+
+    console.log(response2, "response");
+  }
+});
+
 app.listen(3000);

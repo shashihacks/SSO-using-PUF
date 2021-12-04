@@ -42,7 +42,8 @@
 
                 <a mdbRipple class="btn btn-success" (click)="editApp(i, appName, appUrl);update=true"
                     style="padding: .44rem 2.14rem;" role="button">Edit</a>
-                <a mdbRipple class="btn btn-danger" style="padding: .44rem 2.14rem;" role="button">Delete</a>
+                <a mdbRipple class="btn btn-danger" style="padding: .44rem 2.14rem;" role="button"
+                    (click)="deleteApp(i,app)">Delete</a>
 
 
             </span>

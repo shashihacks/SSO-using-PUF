@@ -101,6 +101,20 @@ export class ApplicationsComponent implements OnInit {
   }
 
 
+  deleteApp(index, app) {
+    console.log(app, index)
+    this.accountService.deleteApp(index, app).subscribe(response => {
+      if (response['sendStatus'] === 201) {
+        this.apps.splice(index, 1)
+        this.toaster.success(response['text'])
+      }
+    })
+
+
+
+  }
+
+
   trackByIndex(index, item) {
     return index;
   }

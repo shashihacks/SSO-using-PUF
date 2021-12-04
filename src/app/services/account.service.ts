@@ -165,6 +165,16 @@ export class AccountService {
 
   }
 
+  deleteApp(index, app) {
+    let deleteAppSubject = new Subject<Object>();
+    this.http.post(`${environment.apiUrl}/api/delete-app`, { "token": this.token, data: app }).subscribe(response => {
+      console.log("response from server", response)
+      deleteAppSubject.next(response)
+
+    })
+    return deleteAppSubject.asObservable()
+  }
+
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
