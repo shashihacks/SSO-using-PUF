@@ -152,11 +152,15 @@ export class AccountService {
 
   updateApp(index, name, url) {
     let updateAppSubject = new Subject<Object>();
+
     this.http.post(`${environment.apiUrl}/api/update-app`, { "token": this.token, data: { name, url, index } }).subscribe(response => {
       console.log("response from server", response)
       updateAppSubject.next(response)
 
     })
+
+
+
     return updateAppSubject.asObservable()
 
   }

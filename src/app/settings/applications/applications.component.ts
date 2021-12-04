@@ -82,9 +82,27 @@ export class ApplicationsComponent implements OnInit {
     console.log(this.currentUpdateIndex)
     if (this.currentUpdateIndex === undefined || this.currentUpdateIndex === null) return
     console.log(this.currentUpdateIndex, "to update", name, url)
-    this.accountService.updateApp(this.currentUpdateIndex, name, url)
+
+    this.accountService.updateApp(this.currentUpdateIndex, name, url).subscribe(response => {
+      console.log("update response", response)
+      if (response['sendStatus'] === 200) {
+        console.log(this.apps, "current")
+        this.apps[this.currentUpdateIndex]['name'] = name
+        this.apps[this.currentUpdateIndex]['url'] = url
+        // this.apps = response['data']
+        this.toaster.success(response['text'])
+      }
+    })
+
+
+
     this.update = false
     this.form.reset()
+  }
+
+
+  trackByIndex(index, item) {
+    return index;
   }
 
 }

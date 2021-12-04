@@ -32,7 +32,7 @@
 
 <div class="h4 mb-2">Allowed applications</div>
 <div class="card">
-    <ul class="list-group list-group-flush" *ngFor="let app of apps; let i=index">
+    <ul class="list-group list-group-flush" *ngFor="let app of apps; let i=index; trackBy: trackByIndex">
         <li class="list-group-item">
             {{app.name}}
             <span class="float-end">

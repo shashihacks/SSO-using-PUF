@@ -357,21 +357,12 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
     res.send({ sendStatus: 404, text: "User not found, update failed" });
     return false;
   } else {
-    //update Object
-    // userData = doc.data();
     const { index, name, url } = req.body.data;
-    let dynNamekey = "settings.applications." + index + ".name";
-    let dynUrlkey = `settings.applications.${index}.url`;
     let appsCopy = doc.data().settings.applications;
-    console.log("appscopy");
-    console.log(appsCopy);
-
     oldName = appsCopy[index].name;
     oldUrl = appsCopy[index].url;
     appsCopy[index].name = name;
     appsCopy[index].url = url;
-
-    console.log("name", name, "url:", url);
     let response = await userRef
       .update(
         {
@@ -395,8 +386,8 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
         },
         { merge: true }
       )
-      .then(async () => {
-        console.log("thennable");
+      .then(() => {
+        res.send({ sendStatus: 200, data: appsCopy, text: "Update success" });
       });
   }
 });
