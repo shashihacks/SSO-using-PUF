@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CollapseComponent } from 'angular-bootstrap-md';
 
 @Component({
@@ -9,6 +10,7 @@ import { CollapseComponent } from 'angular-bootstrap-md';
 export class SecurityComponent implements OnInit {
   @ViewChildren(CollapseComponent) collapses: CollapseComponent[];
   elementClicked: string;
+  form: FormGroup;
   down = true
   logArrowDown = true
   steps = [{
@@ -22,12 +24,21 @@ export class SecurityComponent implements OnInit {
     label: "Finish"
   }]
   selectedIndex: number = 0;
-  constructor(public element: ElementRef) { }
+  constructor(public element: ElementRef, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    console.log(this.selectedIndex, "i");
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      code: ['', Validators.required],
+
+
+    })
 
   }
+
+  get f() { return this.form.controls; }
+
+
   ngAfterViewInit() {
     Promise.resolve().then(() => {
       this.collapses.forEach((collapse: CollapseComponent) => {
@@ -46,4 +57,26 @@ export class SecurityComponent implements OnInit {
     this.selectedIndex = index;
     console.log(this.selectedIndex, "selectedIndex")
   }
+
+  continue() {
+    let isValid: boolean = true
+    if (this.selectedIndex == 1)
+      isValid = this.validateSecurityCode()
+    if (isValid)
+      this.selectedIndex++
+
+    console.log(this.form)
+  }
+
+
+  sendCode() {
+
+  }
+  validateSecurityCode() {
+    console.log("validate")
+    // throw new Error('Function not implemented.');
+    return true
+  }
+
 }
+

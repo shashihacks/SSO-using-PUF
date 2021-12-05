@@ -31,17 +31,41 @@
 
 
         </div>
-        <ng-template [ngIf]="selectedIndex ==1">
-            Content 0
-            [class.active]="selectedIndex === i"
-            [class.completed]="selectedIndex < i && selectedIndex !=i" </ng-template>
+        <form class="text-center border border-light  pt-0" [formGroup]="form">
+            <ng-template [ngIf]="selectedIndex ==0">
+                <input formControlName="email" type="email" id="defaultRegisterFormEmail" class="form-control mb-4"
+                    placeholder="E-mail" [class.is-invalid]="form.get('email').invalid && form.get('email').touched">
 
-                <ng-template [ngIf]="selectedIndex ==2">
-                    Content 1
-                </ng-template>
-                <ng-template [ngIf]="selectedIndex ==0">
-                    Content 2
-                </ng-template>
+                <div *ngIf="(form.get('email').invalid && form.get('email').touched) || form.get('email').dirty">
+                    <small class="text-danger" *ngIf="form.get('email').errors?.required">Email address is
+                        required</small>
+                    <small class="text-danger" *ngIf="form.get('email').errors?.email">Email address is invalid</small>
+                </div>
+            </ng-template>
+
+            <ng-template [ngIf]="selectedIndex ==1">
+
+
+                <div class="input-group mb-3">
+                    <input formControlName="code" type="number" class="form-control" placeholder="Security code"
+                        aria-label="Security code" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="input-group-text" id="basic-addon2" (click)="sendCode()">Send code</button>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template [ngIf]="selectedIndex ==2">
+                <div>
+                    You have successfully registered
+                </div>
+
+            </ng-template>
+            <button [disabled]="this.form.get('email').status == 'INVALID'" *ngIf="selectedIndex!==2" mdbBtn
+                type="button" color="deep-purple" mdbWavesEffect (click)="continue()">Next</button>
+            <button *ngIf="selectedIndex==2" mdbBtn type="button" color="deep-purple" mdbWavesEffect
+                (click)="continue()">Finish</button>
+
+        </form>
     </div>
 
 
