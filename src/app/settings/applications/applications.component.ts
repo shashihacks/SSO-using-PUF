@@ -22,7 +22,7 @@ export class ApplicationsComponent implements OnInit {
     //   console.log(response, "application")
     //   // this.apps = response['data']
     // })
-    if (Object.keys(this.accountService.userSettings).length === 0 || this.accountService.userSettings['settings']['applications'] === undefined) {
+    if (Object.keys(this.accountService.userSettings).length === 0 || (!this.accountService.userSettings['settings'] || this.accountService.userSettings['settings']['applications'] === undefined)) {
 
       this.apps = []
     }

@@ -240,11 +240,21 @@ app.post("/api/sso-userdata", authenticateToken, async (req, res) => {
 app.post("/api/userinfo", authenticateToken, async (req, res) => {
   console.log("userdata requested");
   console.log(req.user);
-  const { name } = req.user;
+  var { name } = req.user;
   //get data from firestore
+  console.log(name, "is name found?");
+
+  // const { puf_token } = req.user;
+  if (name == undefined) {
+    let { puf_token } = req.user;
+    name = puf_token;
+  }
+
   let userData = {};
   const userRef = db.collection("users").doc(name);
+
   const doc = await userRef.get();
+
   if (!doc.exists) {
     return false;
   } else {

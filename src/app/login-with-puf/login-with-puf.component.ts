@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../services';
+import { AccountService } from '../services/account.service';
 @Component({
   selector: 'app-login-with-puf',
   templateUrl: './login-with-puf.component.html',
@@ -15,13 +16,28 @@ export class LoginWithPufComponent implements OnInit {
   loggedInSubscription: Subscription;
   loginForm: FormGroup;
   returnUrl: string = '/';
+  reDirection: boolean = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private accountService: AccountService,
     private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       token: ['', [Validators.required, Validators.minLength(6)]]
+    })
+
+    this.authenticationService.currentUser.subscribe(userObject => {
+      if (userObject)
+        this.router.navigate(['/home'])
+    })
+
+
+    this.route.queryParams.subscribe(params => {
+      const { redirectUrl, clientId } = params
+      console.log(redirectUrl, clientId)
+      if (redirectUrl && clientId)
+        this.reDirection = true
     })
 
 
@@ -40,29 +56,38 @@ export class LoginWithPufComponent implements OnInit {
     this.form.reset()
 
     this.authenticationService.currentUser.subscribe(userObject => {
-      //   if (userObject) {
-      //   //   this.route.queryParams.subscribe(params => {
-      //   //     console.log(params)
-      //   //     const { returnUrl } = params
-      //   //     if (returnUrl && params) {
-      //   //       console.log(returnUrl, typeof (returnUrl))
-      //   //       if (returnUrl.includes('redirectUrl')) {
-      //   //         console.log("yes contains")
-      //   //         let url = decodeURIComponent(returnUrl.split('redirectUrl=')[1])
-      //   //         console.log(url)
-      //   //         window.location.href = url + '?userdata=shashi@gmail.com'
-      //   //       }
-      //   //       else {
+      if (this.reDirection)
+        this.route.queryParams.subscribe(params => {
+          console.log(params)
 
-      //   //       }
-      //   //       this.router.navigate([returnUrl])
-      //   //     }
-      //   //     else {
-      //   //       console.log("navigating to...")
-      //   //       this.router.navigate(['/home'])
-      //   //     }
-      //   //   })
-      //   // }
+          //if user is coming  with redirectUrl and clientId  
+          this.authenticationService.currentUser.subscribe(userObject => {
+            if (userObject) {
+              this.route.queryParams.subscribe(async params => {
+                console.log(params, userObject)
+                const { redirectUrl, clientId } = params
+                if (redirectUrl && clientId) {
+                  let userData
+                  this.accountService.getUserData().subscribe(data => {
+                    let firstName = data['firstName']
+                    let lastName = data['lastName']
+
+                    console.log(data)
+                    window.location.href = redirectUrl + '?firstName=' + firstName + '&lastName=' + lastName + '&email=' + data['email'] + '&HMAC=' + data['HMAC']
+
+                  })
+                }
+                else {
+                  console.log("navigating to...")
+                  this.router.navigate(['/home'])
+                }
+              })
+            }
+
+
+
+          })
+        })
     })
 
     // this.router.navigate(['/home'])
