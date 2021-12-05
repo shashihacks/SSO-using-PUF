@@ -1,7 +1,7 @@
 <!-- Horizontal Steppers -->
 <div class="row">
-    <button mdbBtn color="secondary" outline="true" class="waves-light" type="button"
-        (click)="test.toggle(); down=!down" mdbWavesEffect>
+    <button mdbBtn color="success" outline="true" class="waves-light" type="button" (click)="test.toggle(); down=!down"
+        mdbWavesEffect>
         2FA Authentication <mdb-icon fas icon="angle-down" *ngIf="down"></mdb-icon>
         <mdb-icon fas icon="angle-up" *ngIf="!down"></mdb-icon>
     </button>
@@ -61,7 +61,7 @@
 
             </ng-template>
             <button [disabled]="this.form.get('email').status == 'INVALID'" *ngIf="selectedIndex!==2" mdbBtn
-                type="button" color="deep-purple" mdbWavesEffect (click)="continue()">Next</button>
+                type="button" color="primary" mdbWavesEffect (click)="continue()">Next</button>
             <button *ngIf="selectedIndex==2" mdbBtn type="button" color="deep-purple" mdbWavesEffect
                 (click)="continue()">Finish</button>
 
@@ -73,16 +73,49 @@
 
 
 <div class="row">
-    <button mdbBtn color="secondary" outline="true" class="waves-light" type="button"
+    <button mdbBtn color="success" outline="true" class="waves-light" type="button"
         (click)="log.toggle(); logArrowDown= !logArrowDown" mdbWavesEffect>
         Logs <mdb-icon fas icon="angle-down" *ngIf="logArrowDown">
         </mdb-icon>
         <mdb-icon fas icon="angle-up" *ngIf="!logArrowDown"></mdb-icon>
     </button>
 
-    <div mdbCollapse [isCollapsed]="true" #log="bs-collapse">
+    <div mdbCollapse [isCollapsed]="false" #log="bs-collapse">
         <div class="col-md-12">
-            Sign in Logs
+            <mdb-card class="m-3">
+
+                <!--Card content-->
+                <mdb-card-body>
+
+                    <!--Title-->
+                    <mdb-card-title class="text-center">
+                        <h4>Login records </h4>
+                    </mdb-card-title>
+
+                    <!--Text-->
+                    <mdb-card-text>
+
+                        <table mdbTable hover="true">
+                            <thead>
+                                <tr>
+                                    <th *ngFor="let head of headElements;" scope="col">{{head}} </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr mdbTableCol *ngFor="let el of elements;let i=index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{el.domain}}</td>
+                                    <td>{{el.time}}</td>
+                                    <td>{{el.party}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </mdb-card-text>
+
+
+                </mdb-card-body>
+            </mdb-card>
         </div>
 
     </div>

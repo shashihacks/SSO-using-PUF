@@ -29,7 +29,7 @@
 
         </div>
 
-        <button mdbBtn color="red" block="" class="my-4" type="submit" (click)="cancel()">Cancel</button>
+        <button mdbBtn color="red" block="" class="my-4" type="button" (click)="cancel()">Cancel</button>
 
         <button [disabled]="!authSettings['emailAndPass'] && !authSettings['pufResponse']" mdbBtn color="success"
             block="" class="my-4" type="submit">Update</button>

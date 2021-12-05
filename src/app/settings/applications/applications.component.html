@@ -31,10 +31,10 @@
 
 
 
-<div class="h4 mb-2">Allowed applications</div>
+<div class="h4 mb-3">Allowed applications</div>
 <div class="card">
     <ul class="list-group list-group-flush" *ngFor="let app of apps; let i=index; trackBy: trackByIndex">
-        <li class="list-group-item">
+        <li class="list-group-item" style="line-height: 3rem;">
             {{app.name}}
             <span class="float-end">
                 <a href="{{app.url}}" target="_blank" mdbTooltip="Visit {{app.name}} " mdbRipple

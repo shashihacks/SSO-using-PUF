@@ -24,6 +24,13 @@ export class SecurityComponent implements OnInit {
     label: "Finish"
   }]
   selectedIndex: number = 0;
+  elements: any = [
+    { 'domain': 'Mark', time: 'Otto', party: 'Yes' },
+    { 'domain': 'Mark', time: 'Otto', party: 'Yes' },
+    { 'domain': 'Mark', time: 'Otto', party: 'No' },
+  ];
+
+  headElements = ['Nr', 'Domain', 'Last accessed', '3rd party'];
   constructor(public element: ElementRef, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
