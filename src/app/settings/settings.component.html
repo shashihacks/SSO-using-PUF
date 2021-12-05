@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-3 offset-1">
+        <div class="col-md-3">
             <div class="list-group">
                 <a class="list-group-item list-group-item-action" [ngClass]="item=='Profile' ? 'active text-white' : ''"
                     (click)="
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="col-md-5 offset-1">
+        <div class="col-md-7 offset-1">
             <ng-template [ngIf]="item=='Profile'">
 
                 <div class="col-md-6 col-sm-12 col-lg-12 align-content-center">
@@ -102,6 +102,11 @@
 
             <ng-template [ngIf]="item == 'Applications'">
                 <app-applications></app-applications>
+            </ng-template>
+
+            <ng-template [ngIf]="item == 'Security'">
+                <app-security></app-security>
+
             </ng-template>
 
 

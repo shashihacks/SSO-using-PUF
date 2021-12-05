@@ -35,6 +35,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginWithPufComponent } from './login-with-puf/login-with-puf.component';
 import { AuthSettingsComponent } from './settings/auth-settings/auth-settings.component';
 import { ApplicationsComponent } from './settings/applications/applications.component';
+import { SecurityComponent } from './settings/security/security.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -51,7 +53,8 @@ export function tokenGetter() {
     IdpComponent,
     LoginWithPufComponent,
     AuthSettingsComponent,
-    ApplicationsComponent
+    ApplicationsComponent,
+    SecurityComponent
 
   ],
   imports: [
@@ -69,7 +72,8 @@ export function tokenGetter() {
         tokenGetter: tokenGetter,
       }
     }),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+
 
 
   ],

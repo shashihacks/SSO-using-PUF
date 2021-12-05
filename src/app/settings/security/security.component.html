@@ -1,0 +1,72 @@
+<!-- Horizontal Steppers -->
+<div class="row">
+    <button mdbBtn color="secondary" outline="true" class="waves-light" type="button"
+        (click)="test.toggle(); down=!down" mdbWavesEffect>
+        2FA Authentication <mdb-icon fas icon="angle-down" *ngIf="down"></mdb-icon>
+        <mdb-icon fas icon="angle-up" *ngIf="!down"></mdb-icon>
+    </button>
+
+    <div mdbCollapse [isCollapsed]="true" #test="bs-collapse">
+        <div class="col-md-12">
+
+            <!-- Stepers Wrapper -->
+            <ul class="stepper stepper-horizontal">
+
+                <!-- First Step -->
+
+                <li [class.active]="selectedIndex ==i" [class.completed]="selectedIndex > i "
+                    *ngFor="let step of steps; let i=index" (click)="setIndex(i)">
+                    <a>
+
+                        <span class="circle">{{step.title}}</span>
+                        <span class="label">{{step.label}}</span>
+                    </a>
+                </li>
+
+
+            </ul>
+            <!-- /.Stepers Wrapper -->
+
+
+
+
+        </div>
+        <ng-template [ngIf]="selectedIndex ==1">
+            Content 0
+            [class.active]="selectedIndex === i"
+            [class.completed]="selectedIndex < i && selectedIndex !=i" </ng-template>
+
+                <ng-template [ngIf]="selectedIndex ==2">
+                    Content 1
+                </ng-template>
+                <ng-template [ngIf]="selectedIndex ==0">
+                    Content 2
+                </ng-template>
+    </div>
+
+
+</div>
+
+
+<div class="row">
+    <button mdbBtn color="secondary" outline="true" class="waves-light" type="button"
+        (click)="log.toggle(); logArrowDown= !logArrowDown" mdbWavesEffect>
+        Logs <mdb-icon fas icon="angle-down" *ngIf="logArrowDown">
+        </mdb-icon>
+        <mdb-icon fas icon="angle-up" *ngIf="!logArrowDown"></mdb-icon>
+    </button>
+
+    <div mdbCollapse [isCollapsed]="true" #log="bs-collapse">
+        <div class="col-md-12">
+            Sign in Logs
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+<!-- /.Horizontal Steppers -->

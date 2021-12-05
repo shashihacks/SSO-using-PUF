@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-
+import { catchError, filter, map } from "rxjs/operators";
 import { AccountService } from '../services/account.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -29,6 +29,10 @@ export class JwtInterceptor implements HttpInterceptor {
             console.log(request)
         }
 
-        return next.handle(request);
+        return next.handle(request).pipe(
+            map((event: HttpEvent<any>) => {
+                console.log(event, "event")
+                return event;
+            }));
     }
 }
