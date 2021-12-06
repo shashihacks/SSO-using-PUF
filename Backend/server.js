@@ -277,7 +277,13 @@ app.post("/api/updateuser", authenticateToken, async (req, res) => {
 
 app.post("/api/authsettings", authenticateToken, async (req, res) => {
   let updateUserObject = req.body.user;
-  const { name } = req.user;
+  var { name } = req.user;
+
+  if (name == undefined) {
+    let { puf_token } = req.user;
+    name = puf_token;
+  }
+
   console.log(req.user, "get settings");
   const userRef = db.collection("users").doc(name);
   const doc = await userRef.get();
@@ -299,7 +305,12 @@ app.post("/api/authsettings", authenticateToken, async (req, res) => {
 
 app.post("/api/updateauthsettings", authenticateToken, async (req, res) => {
   let updateUserObject = req.body.user;
-  const { name } = req.user;
+  var { name } = req.user;
+  if (name == undefined) {
+    let { puf_token } = req.user;
+    name = puf_token;
+  }
+
   console.log(req.user, "get settings");
   const userRef = db.collection("users").doc(name);
   const doc = await userRef.get();
