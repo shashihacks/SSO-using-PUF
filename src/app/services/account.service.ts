@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class AccountService {
 
   loggedInStatus: boolean
-  userSettings: Object
+  userSettings: any
   token
   subject: Subject<Object>;
   constructor(private db: AngularFirestore, private http: HttpClient, private router: Router) {

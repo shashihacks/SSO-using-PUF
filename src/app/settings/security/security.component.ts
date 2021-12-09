@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CollapseComponent } from 'angular-bootstrap-md';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-security',
@@ -10,6 +11,7 @@ import { CollapseComponent } from 'angular-bootstrap-md';
 export class SecurityComponent implements OnInit {
   @ViewChildren(CollapseComponent) collapses: CollapseComponent[];
   elementClicked: string;
+  logs = []
   form: FormGroup;
   down = true
   logArrowDown = true
@@ -30,17 +32,20 @@ export class SecurityComponent implements OnInit {
     { 'domain': 'Mark', time: 'Otto', party: 'No' },
   ];
 
-  headElements = ['Nr', 'Domain', 'Last accessed', '3rd party'];
-  constructor(public element: ElementRef, private formBuilder: FormBuilder) { }
+
+  headElements = ['Nr', 'IP', 'Timestamp', 'Device', 'Login type', 'OS', 'Browser'];
+  constructor(public element: ElementRef, private formBuilder: FormBuilder, private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', Validators.required],
-
-
     })
 
+
+
+    const { settings: { logins } } = this.accountService.userSettings
+    this.logs = logins
   }
 
   get f() { return this.form.controls; }
