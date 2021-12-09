@@ -8,6 +8,7 @@ import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -15,21 +16,44 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
     public returnUrl: string
-    constructor(private http: HttpClient, private router: Router, private db: AngularFirestore) {
+    public deviceInfo
+    constructor(private deviceService: DeviceDetectorService, private http: HttpClient, private router: Router, private db: AngularFirestore) {
         this.currentUserSubject = new BehaviorSubject(localStorage.getItem('accessToken'));
         this.currentUser = this.currentUserSubject.asObservable();
+        this.deviceInfo = this.deviceService.getDeviceInfo()
     }
 
     public get currentUserValue() {
         return this.currentUserSubject.value;
     }
 
+    get device(): any {
+        return this.deviceService.getDeviceInfo();
+    }
+
+    get isMobile(): boolean {
+        return this.deviceService.isMobile();
+    }
+
+    get isTablet(): boolean {
+        return this.deviceService.isTablet();
+    }
+
+    get isDesktop(): boolean {
+        return this.deviceService.isDesktop();
+    }
+
+
     login(email: string, password: string) {
 
         // this.dblogin(username, password)
+        const deviceName = this.isDesktop ? 'Desktop' : this.isTablet ? 'Tablet' : this.isMobile ? 'Mobile' : 'Unknown'
 
+        console.log(this.deviceInfo, "Info")
+        this.deviceInfo['device'] = deviceName
+        this.deviceInfo['loginType'] = 'Email'
 
-        this.http.post(`${environment.apiUrl}/api/login`, { "email": email, "password": password }).subscribe(response => {
+        this.http.post(`${environment.apiUrl}/api/login`, { "email": email, "password": password, deviceInfo: this.deviceInfo }).subscribe(response => {
 
             if (response['accessToken'] && response['accessToken'] != '') {
                 localStorage.setItem('accessToken', response['accessToken']);

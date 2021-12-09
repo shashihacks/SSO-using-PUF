@@ -87,9 +87,10 @@ app.post("/api/logout", (req, res) => {
 app.post("/api/login", async (req, res) => {
   // Authenticate User
 
-  const { email, password } = req.body;
-  console.log(email, password);
-  const user = { name: email, password: password };
+  const { email, password, deviceInfo } = req.body;
+  deviceInfo["timestamp"] = Date.now();
+  console.log(email, password, deviceInfo);
+  const user = { name: email, password: password, deviceInfo };
   // console.log("user login requested");
 
   let userExists = await accountExists(user);
@@ -115,7 +116,8 @@ function generateAccessToken(user) {
 async function accountExists(user) {
   //check from db
   // console.log(user, "checking user");
-  const { name: email, password } = user;
+  const { name: email, password, deviceInfo } = user;
+
   const userRef = db.collection("users").doc(email.toString());
   const doc = await userRef.get();
   if (!doc.exists) {
@@ -124,8 +126,15 @@ async function accountExists(user) {
   } else {
     // console.log("Document data:", doc.data());
     const { email: dbEmail, password: dbPassword } = doc.data();
-    if (dbEmail == email && dbPassword == password) return true;
-    else return false;
+    if (dbEmail == email && dbPassword == password) {
+      // Atomically add a new region to the "regions" array field.
+      const unionRes = await userRef.update({
+        "settings.logins": firebase.firestore.FieldValue.arrayUnion({
+          ...deviceInfo,
+        }),
+      });
+      return true;
+    } else return false;
   }
 }
 

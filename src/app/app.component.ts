@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-// import { AuthenticationService } from './_services';
+
+
 
 import { Router } from '@angular/router';
 import { User } from './models/user';
@@ -18,6 +19,8 @@ export class AppComponent implements OnInit {
   title = 'sso-using-puf';
   user = false
   currentUser: User;
+  deviceInfo = null;
+
 
   constructor(private accountService: AccountService, private db: AngularFirestore,
     private authenticationService: AuthenticationService,
@@ -26,7 +29,10 @@ export class AppComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     console.log(this.currentUser, "currentUser")
 
+
   }
+
+
 
 
   logout() {
@@ -35,15 +41,7 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    // console.log(this.db.collection('users').get().subscribe(res => console.log(res)))
-    // console.log(this.db.collection("users").get().subscribe((querySnapshot) => {
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.data(), "got")
-    //     // console.log(`${doc.id} => ${doc.data()}`);
-    //   });
-    // }));
+
   }
 
 
