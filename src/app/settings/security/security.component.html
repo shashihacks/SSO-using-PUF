@@ -105,7 +105,7 @@
                                 <tr mdbTableCol *ngFor="let log of logs;let i=index">
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{log['ip'] || ''}}</td>
-                                    <td>{{log['timestamp'] | date: 'yyyy/MM/dd h:mm:ss a'}}</td>
+                                    <td>{{log['timestamp'] | date: 'dd/MM/yy h:mm:ss a'}}</td>
                                     <td>{{log['device']}}</td>
                                     <td>{{log['loginType']}}</td>
                                     <td>{{log['os_version']}}</td>
