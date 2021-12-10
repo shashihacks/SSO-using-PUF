@@ -146,7 +146,7 @@ app.post("/api/login-with-puf", async (req, res) => {
 
   const { puf_token } = req.body;
   console.log(puf_token);
-  const { username } = generateUsername();
+  const username = generateUsername();
   console.log(username, "generated for user");
   const user = { name: username, puf_token: puf_token };
   console.log("user login requested with PUF");
@@ -158,18 +158,19 @@ app.post("/api/login-with-puf", async (req, res) => {
     res.json({
       accessToken: accessToken,
       refreshToken: refreshToken,
-      accountDetails,
+      // accountDetails,
     });
   } else {
     let registrationResponse = await registerAccount(puf_token);
     if (registrationResponse) {
+      console.log("generating token");
       const accessToken = generateAccessToken(user);
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       refreshTokens.push(refreshToken);
       res.json({
         accessToken: accessToken,
         refreshToken: refreshToken,
-        accountDetails,
+        // accountDetails,
       });
     } else {
       res.send({ text: "Unable to create account" });
@@ -183,13 +184,13 @@ function generateUsername() {
 }
 
 async function getAccount(puf_token) {
-  const userRef = db.collection("users").doc(puf_token.toString());
+  const userRef = await db.collection("users").doc(puf_token);
   const doc = await userRef.get();
   if (!doc.exists) {
-    // console.log("No such document!");
+    console.log("No such document!");
     return false;
   } else {
-    // console.log("Document data:", doc.data());
+    console.log("Document data:", doc.data());
 
     return doc.data();
   }
@@ -205,13 +206,16 @@ async function registerAccount(puf_token) {
   };
 
   // console.log(puf_token, data);
-  const userRef = db.collection("users").doc(puf_token.toString());
-  const res = await userRef.set(data);
+  const userRef = await db.collection("users").doc(puf_token.toString());
+  userRef.set(data).then(() => {
+    console.log("registed and sent true");
+    return true;
+  });
 
+  return true;
   // setTimeout(() => {
   //   console.log(res, "response from register Account");
   // }, 3000);
-  if (res) return true;
 }
 
 //Custom data for SSO
@@ -251,9 +255,9 @@ app.post("/api/sso-userdata", authenticateToken, async (req, res) => {
 app.post("/api/userinfo", authenticateToken, async (req, res) => {
   console.log("userdata requested");
   console.log(req.user);
-  var { name } = req.user;
+  var { name, puf_token } = req.user;
   //get data from firestore
-  console.log(name, "is name found?");
+  console.log(name, puf_token, "is name found?");
 
   // const { puf_token } = req.user;
   if (name == undefined) {
@@ -262,18 +266,25 @@ app.post("/api/userinfo", authenticateToken, async (req, res) => {
   }
 
   let userData = {};
-  const userRef = db.collection("users").doc(name);
+  let userRef;
+  if (puf_token) {
+    userRef = await db.collection("users").doc(puf_token);
+  } else {
+    userRef = await db.collection("users").doc(name);
+  }
 
   const doc = await userRef.get();
 
   if (!doc.exists) {
+    console.log("does'nt exist");
     return false;
   } else {
     userData = doc.data();
   }
   delete userData["password"];
-  console.log(userData);
-  res.send(userData);
+  console.log(userData, "userdata");
+  // res.send(userData);
+  res.status(200).send(userData);
 });
 
 app.post("/api/updateuser", authenticateToken, async (req, res) => {

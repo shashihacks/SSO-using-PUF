@@ -89,7 +89,7 @@ export class AccountService {
     let userInfoSubject = new Subject<Object>();
 
     this.http.post(`${environment.apiUrl}/api/userinfo`, { "token": this.token }).subscribe(response => {
-      console.log(response)
+      console.log(response, "user info data")
       this.userSettings = response
       userInfoSubject.next(response)
 
