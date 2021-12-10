@@ -27,10 +27,25 @@ export class AccountService {
     console.log(this.loggedInStatus, "from service")
   }
 
+  deleteAccount() {
+    console.log('Delete account requested')
+    let accoundeDeleteSubject = new Subject<Object>();
 
+    this.http.delete(`${environment.apiUrl}/api/delete-account`).subscribe(response => {
+      console.log(response)
+      accoundeDeleteSubject.next(response)
+
+    })
+
+
+    return accoundeDeleteSubject.asObservable()
+  }
   registerAccount(data) {
     console.log(data)
-    const { firstName, lastName, email, phone, password } = data
+    const { email } = data
+    data['settings'] = {
+      emailAndPass: true, pufResponse: true
+    }
     this.db.collection("users").doc(email).set(data).then((docRef) => {
       console.log('document written', docRef)
     }).catch((error) => {
@@ -40,6 +55,7 @@ export class AccountService {
   }
 
 
+  //Not used
   loginUser(data) {
     const { email } = data
     let docRef = this.db.collection("users").doc(email).get(email)

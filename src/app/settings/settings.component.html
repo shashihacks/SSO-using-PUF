@@ -108,6 +108,10 @@
                 <app-security></app-security>
 
             </ng-template>
+            <ng-template [ngIf]="item == 'Settings'">
+                <button class="btn btn-danger" type="button" (click)="deleteAccount()">Delete Account</button>
+
+            </ng-template>
 
 
         </div>

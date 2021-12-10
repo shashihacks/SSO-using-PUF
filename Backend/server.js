@@ -105,7 +105,7 @@ app.post("/api/login", async (req, res) => {
       text: "Login Success",
     });
   } else {
-    res.send({ text: "Invalid Email or Password" });
+    res.send({ text: "Invalid credentials or Account is disabled" });
   }
 });
 
@@ -114,8 +114,6 @@ function generateAccessToken(user) {
 }
 
 async function accountExists(user) {
-  //check from db
-  // console.log(user, "checking user");
   const { name: email, password, deviceInfo } = user;
 
   const userRef = db.collection("users").doc(email.toString());
@@ -124,10 +122,13 @@ async function accountExists(user) {
     console.log("No such document!");
     return false;
   } else {
-    // console.log("Document data:", doc.data());
-    const { email: dbEmail, password: dbPassword } = doc.data();
-    if (dbEmail == email && dbPassword == password) {
-      // Atomically add a new region to the "regions" array field.
+    const {
+      email: dbEmail,
+      password: dbPassword,
+      settings: { emailAndPass, pufResponse },
+    } = doc.data();
+    console.log("settings", emailAndPass, pufResponse);
+    if (dbEmail == email && dbPassword == password && emailAndPass) {
       const unionRes = await userRef.update({
         "settings.logins": firebase.firestore.FieldValue.arrayUnion({
           ...deviceInfo,
@@ -200,6 +201,7 @@ async function registerAccount(puf_token) {
     email: "",
     firstName: generateUsername(),
     phone: "",
+    settings: { emailAndPass: true, pufResponse: true },
   };
 
   // console.log(puf_token, data);
@@ -448,6 +450,10 @@ app.post("/api/delete-app", authenticateToken, async (req, res) => {
 
     console.log(response2, "response");
   }
+});
+
+app.delete("/api/delete-account", authenticateToken, async (req, res) => {
+  console.log("delete account");
 });
 
 app.listen(3000);

@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -17,7 +18,8 @@ export class AuthenticationService {
     public currentUser: Observable<any>;
     public returnUrl: string
     public deviceInfo
-    constructor(private deviceService: DeviceDetectorService, private http: HttpClient, private router: Router, private db: AngularFirestore) {
+    constructor(private toaster: ToastrService,
+        private deviceService: DeviceDetectorService, private http: HttpClient, private router: Router, private db: AngularFirestore) {
         this.currentUserSubject = new BehaviorSubject(localStorage.getItem('accessToken'));
         this.currentUser = this.currentUserSubject.asObservable();
         this.deviceInfo = this.deviceService.getDeviceInfo()

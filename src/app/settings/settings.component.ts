@@ -74,4 +74,10 @@ export class SettingsComponent implements OnInit {
   cancel() {
     this.router.navigate(['/home'])
   }
+
+
+  deleteAccount() {
+    this.accountService.deleteAccount()
+    console.log("delete account")
+  }
 }

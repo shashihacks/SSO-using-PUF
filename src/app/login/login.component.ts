@@ -103,7 +103,9 @@ export class LoginComponent implements OnInit {
         })
       })
 
-    this.router.navigate(['/home'])
+    if (this.authenticationService.loginResponse == 'Login Success')
+      this.router.navigate(['/home'])
+
     this.form.reset()
   }
 }
