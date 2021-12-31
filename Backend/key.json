@@ -1,8 +1,12 @@
 {
-  "apiKey": "AIzaSyAzS8MmxAoTIZkh5hDj5kaEyIURWNpO3_w",
-  "authDomain": "pufs-f13d7.firebaseapp.com",
-  "projectId": "pufs-f13d7",
-  "storageBucket": "pufs-f13d7.appspot.com",
-  "messagingSenderId": "1067723588014",
-  "appId": "1:1067723588014:web:6c5d531b3baa2fd4f7083f"
+  "type": "service_account",
+  "project_id": "pufs-f13d7",
+  "private_key_id": "3962ba4831a36125cbe12d6ba83f434d319ce9a3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7IZK4oOzc6Ba+\n2Vla4hZ8pgs9lonDWe22Pc+IlmKfEnat3Uzfh+94WRLmjuIQXtymEpm/JQleDjyv\nHE+is+ds+a4nWzbBaCHGEwsmb9AMlwKhwrzXI/kert3cTyBXqWXfdakGXvBPLA1x\n8Rm1kGKj9vsgVFfUlrmIZLJ2C8W4KhGnzSQmTvRNzAKiAS4cenrEBFi7yNiwO81i\npj7ToCjkJmO3ns/lKwxuvlnqUoOoe9ZbM/WoefJ2wfMjiDNSLCkzCxIzJ4Xisq7n\nBoyXCRGfuPz8sMnFzf7lGoi3ZGFCSIVwYgphDuHnwCqnv9oi8hqrMxBbCK7nGwkF\nv5w4j0I3AgMBAAECggEAEHMeE67Jw41/Wl1+1ldjhKeP+2T9TTfdhpSeZrJZjwQv\nfI8kj83CRkEGQVA0HR5JpSujakMWNLdprDb/5RyNbm3wWjNRd+Twexn3c/SGRGUN\n7SxSL1NRNdpHVHN8M1iHxQHxzsaPt1X3BJoeGXDMyv8OCkR/yAdL3eqEKY5VXh/l\n/ycUKazIYP2xj435lS8kw/qir/WMR9qnaQWDx7LTOKP3jbwUJfTrVSpDXHXNhB6w\npUmbWh6A4Ytb3uHZWRyJR1gm1ZxksU7+wVOafneDEsg9PgtuSRGPTYUdFLBcZSkM\nKCSzRCvhypRZ4ScVkLXP9ultkkqKwDz6weP1d+oQWQKBgQDsZztUWhb8tOKpz7Mk\nqb+IZDvQS51TCN/DOgHYVzIs+g4NMPy3cgHbkS+Hg8DnuyNzGYQbbqC8iONWqpK9\nABkaPSTYhD5KgdhL5DS7t47DjAYGc34LHtaM3eRyfJy+wASFrKgy6tWeDSfAUOdY\n5HWfCOZrBbwHQLZ09NIWZb6mEwKBgQDKpLoDT5N1w2PKQef1qrAyAImgGLVD6fkc\nnUq8X24TlBoEmQvcMSta/Nv8LvidTt/uH1N8CEN1eLlEE76SlYjXxoK5OipoOm3e\nk0R4fDSxbKXDpKy1ed7EO4oLqZXcp0MB45frEGmdJrWLpPeUI4pzViluMx9fOlWx\nOO75JHdHzQKBgQCLzZzrjH+NoNduvxLdOrm3SjeJPj5izZuu044lx6M3sAVBTdgW\nEIkCtUCbbpJVOHmFZvCWXH0YIgf3x9YRiY5O0xwII2THITSt5N4+qRX3lMY3aHOA\n1hLhqZOhFQqJT/scpnet7Oy5lGQOuommKy1YCKZjYjfJPj7ouaPIdREjGwKBgFBq\nNCLSNks6QWRm6PzVQlxlWDf+9hfARonzZVABcrY0RGrkrQ8xN+pAg6+8mA4c2cIu\nDjwfL13zjVmVmD+lNYujDAcjLOb1oNn9iONjLqnl2pYbyCmv9hXbJrngD0dj3LRo\nM8YlWjPxw4Np8JGJ1QxV+dTwVpe8l3rfg/28WdVVAoGAPSssIohDIviJ3div1gcl\nnQqDRbZ4Km24CTggliPQIckKm8tdqJjS9fw7ycu+AhlTy+mGX1zTMgFp3GnH9LEc\ng0XLrJk6R/8kCR79lbTWZG1jd4ZUrHMAVk1O08kC/ZjxqtouigFlMY1hatIBkU4t\nZSVd1GFkVED9zTYOalbv3I0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "pufs-f13d7@appspot.gserviceaccount.com",
+  "client_id": "102980933504670034316",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pufs-f13d7%40appspot.gserviceaccount.com"
 }

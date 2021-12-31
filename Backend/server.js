@@ -7,23 +7,22 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const firebase = require("firebase");
-const { sortAndDeduplicateDiagnostics } = require("typescript");
-const { response } = require("express");
+const {
+  initializeApp,
+  applicationDefault,
+  cert,
+} = require("firebase-admin/app");
+const {
+  getFirestore,
+  Timestamp,
+  FieldValue,
+} = require("firebase-admin/firestore");
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAzS8MmxAoTIZkh5hDj5kaEyIURWNpO3_w",
-  authDomain: "pufs-f13d7.firebaseapp.com",
-  projectId: "pufs-f13d7",
-  storageBucket: "pufs-f13d7.appspot.com",
-  messagingSenderId: "1067723588014",
-  appId: "1:1067723588014:web:6c5d531b3baa2fd4f7083f",
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
+const serviceAccount = require("./key.json");
+initializeApp({
+  credential: cert(serviceAccount),
+});
+const db = getFirestore();
 
 // Initialize Firebase
 
@@ -130,7 +129,7 @@ async function accountExists(user) {
     console.log("settings", emailAndPass, pufResponse);
     if (dbEmail == email && dbPassword == password && emailAndPass) {
       const unionRes = await userRef.update({
-        "settings.logins": firebase.firestore.FieldValue.arrayUnion({
+        "settings.logins": FieldValue.arrayUnion({
           ...deviceInfo,
         }),
       });
@@ -365,9 +364,7 @@ app.post("/api/add-app", authenticateToken, async (req, res) => {
   } else {
     userData = doc.data();
     const response = await userRef.update({
-      "settings.applications": firebase.firestore.FieldValue.arrayUnion(
-        req.body["appData"]
-      ),
+      "settings.applications": FieldValue.arrayUnion(req.body["appData"]),
     });
 
     res.send({ sendStatus: 200, text: "update success" });
@@ -409,9 +406,7 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
     let response = await userRef
       .update(
         {
-          "settings.applications": firebase.firestore.FieldValue.arrayUnion(
-            ...appsCopy
-          ),
+          "settings.applications": FieldValue.arrayUnion(...appsCopy),
         },
         { merge: true }
       )
@@ -422,7 +417,7 @@ app.post("/api/update-app", authenticateToken, async (req, res) => {
     let response2 = await userRef
       .update(
         {
-          "settings.applications": firebase.firestore.FieldValue.arrayRemove({
+          "settings.applications": FieldValue.arrayRemove({
             name: oldName,
             url: oldUrl,
           }),
