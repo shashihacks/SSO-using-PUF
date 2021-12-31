@@ -2,8 +2,8 @@
 <div class="row">
     <button mdbBtn color="success" outline="true" class="waves-light" type="button" (click)="test.toggle(); down=!down"
         mdbWavesEffect>
-        2FA Authentication <mdb-icon fas icon="angle-down" *ngIf="down"></mdb-icon>
-        <mdb-icon fas icon="angle-up" *ngIf="!down"></mdb-icon>
+        2FA Authentication <mdb-icon fas icon="angle-down" *ngIf="!down"></mdb-icon>
+        <mdb-icon fas icon="angle-up" *ngIf="down"></mdb-icon>
     </button>
 
     <div mdbCollapse [isCollapsed]="true" #test="bs-collapse">
