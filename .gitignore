@@ -11,7 +11,7 @@ Backend/node_modules
 
 # dependencies
 /node_modules
-
+key.json
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json

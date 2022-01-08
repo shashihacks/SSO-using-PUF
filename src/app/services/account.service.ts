@@ -31,7 +31,7 @@ export class AccountService {
     console.log('Delete account requested')
     let accoundeDeleteSubject = new Subject<Object>();
 
-    this.http.delete(`${environment.apiUrl}/api/delete-account`).subscribe(response => {
+    this.http.delete(`${environment.apiUrl}/api/settings/delete-account`).subscribe(response => {
       console.log(response)
       accoundeDeleteSubject.next(response)
 
@@ -69,7 +69,7 @@ export class AccountService {
     let userData
     this.subject = new Subject<Object>();
 
-    this.http.post(`${environment.apiUrl}/api/sso-userdata`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/sso/userdata`, { "token": this.token }).subscribe(response => {
       console.log(response)
 
       this.subject.next(response)
@@ -88,7 +88,7 @@ export class AccountService {
     let userData
     let userInfoSubject = new Subject<Object>();
 
-    this.http.post(`${environment.apiUrl}/api/userinfo`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/userinfo`, { "token": this.token }).subscribe(response => {
       console.log(response, "user info data")
       this.userSettings = response
       userInfoSubject.next(response)
@@ -101,7 +101,7 @@ export class AccountService {
   updateUser(user): Observable<Object> {
     console.log('update user info requested')
     let userDataSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/updateuser`, { "token": this.token, user }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/updateuser`, { "token": this.token, user }).subscribe(response => {
       console.log(response)
       userDataSubject.next(response)
 
@@ -113,7 +113,7 @@ export class AccountService {
   getUserAuthSettings(): Observable<Object> {
     console.log("Authsettings requested")
     let userAuthSettingsSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/authsettings`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/auth`, { "token": this.token }).subscribe(response => {
       console.log("response from server", response)
       userAuthSettingsSubject.next(response)
 
@@ -127,7 +127,7 @@ export class AccountService {
   updateAuthSettings(settings) {
     console.log("Authsettings requested")
     let updateAuthSettingsSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/updateauthsettings`, { "token": this.token, settings }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/updateauth`, { "token": this.token, settings }).subscribe(response => {
       console.log("response from server", response)
       updateAuthSettingsSubject.next(response)
 
@@ -141,7 +141,7 @@ export class AccountService {
   addApplication(appData) {
 
     let addAppSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/add-app`, { "token": this.token, appData }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/add-app`, { "token": this.token, appData }).subscribe(response => {
       console.log("response from server", response)
       addAppSubject.next(response)
 
@@ -156,7 +156,7 @@ export class AccountService {
   getApplications() {
     console.log("get application data requested")
     let getAppSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/get-apps`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/get-apps`, { "token": this.token }).subscribe(response => {
       console.log("response from server", response)
       getAppSubject.next(response)
 
@@ -169,7 +169,7 @@ export class AccountService {
   updateApp(index, name, url) {
     let updateAppSubject = new Subject<Object>();
 
-    this.http.post(`${environment.apiUrl}/api/update-app`, { "token": this.token, data: { name, url, index } }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/update-app`, { "token": this.token, data: { name, url, index } }).subscribe(response => {
       console.log("response from server", response)
       updateAppSubject.next(response)
 
@@ -183,7 +183,7 @@ export class AccountService {
 
   deleteApp(index, app) {
     let deleteAppSubject = new Subject<Object>();
-    this.http.post(`${environment.apiUrl}/api/delete-app`, { "token": this.token, data: app }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/settings/delete-app`, { "token": this.token, data: app }).subscribe(response => {
       console.log("response from server", response)
       deleteAppSubject.next(response)
 
