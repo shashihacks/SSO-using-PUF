@@ -69,7 +69,7 @@ export class AccountService {
     let userData
     this.subject = new Subject<Object>();
 
-    this.http.post(`${environment.apiUrl}/api/sso/userdata`, { "token": this.token }).subscribe(response => {
+    this.http.post(`${environment.apiUrl}/api/sso/share-userdata`, { "token": this.token }).subscribe(response => {
       console.log(response)
 
       this.subject.next(response)

@@ -3,7 +3,7 @@ const {
   Timestamp,
   FieldValue,
 } = require("firebase-admin/firestore");
-
+const crypto = require("crypto");
 const db = getFirestore();
 
 const shareUserData = async (req, res) => {

@@ -28,7 +28,7 @@ export class IdpComponent implements OnInit {
             console.log(params)
             const { redirectUrl, clientId } = params
             if (redirectUrl && clientId) {
-
+              console.log("inside if")
               this.accountService.getUserData().subscribe(data => {
                 let firstName = data['firstName']
                 let lastName = data['lastName']
