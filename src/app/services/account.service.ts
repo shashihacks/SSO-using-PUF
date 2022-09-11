@@ -16,8 +16,11 @@ export class AccountService {
   subject: Subject<Object>;
   constructor(private db: AngularFirestore, private http: HttpClient, private router: Router) {
 
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
     this.token = localStorage.getItem('accessToken')
     // console.log(this.status, "status check", localStorage.getItem('auth_token'))
+
     if (this.token == null)
       this.loggedInStatus = false
     else
@@ -26,6 +29,7 @@ export class AccountService {
 
     console.log(this.loggedInStatus, "from service")
   }
+
 
   deleteAccount() {
     console.log('Delete account requested')
@@ -48,6 +52,7 @@ export class AccountService {
     }
     this.db.collection("users").doc(email).set(data).then((docRef) => {
       console.log('document written', docRef)
+      this.router.navigateByUrl('/home')
     }).catch((error) => {
       console.error("Error adding document", error)
     });
@@ -68,9 +73,9 @@ export class AccountService {
     console.log('account data requested')
     let userData
     this.subject = new Subject<Object>();
-
+    console.log(this.token, "I have token")
     this.http.post(`${environment.apiUrl}/api/sso/share-userdata`, { "token": this.token }).subscribe(response => {
-      console.log(response)
+      console.log(response, "response received")
 
       this.subject.next(response)
 

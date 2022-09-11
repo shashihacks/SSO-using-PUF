@@ -118,11 +118,13 @@ app.post("/api/login-with-puf", async (req, res) => {
   const { puf_token } = req.body;
   console.log(puf_token);
   const username = generateUsername();
+  // const username = [...puf_token].reverse().join("");
   console.log(username, "generated for user");
   const user = { name: username, puf_token: puf_token };
   console.log("user login requested with PUF");
   let accountDetails = await getAccount(puf_token);
   if (accountDetails["pufToken"]) {
+    console.log("this puf existed");
     const accessToken = generateAccessToken(user);
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
     refreshTokens.push(refreshToken);
@@ -167,11 +169,20 @@ async function getAccount(puf_token) {
   }
 }
 
+function generateEmail() {
+  var chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+  var string = "";
+  for (var ii = 0; ii < 15; ii++) {
+    string += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return string + "@provider.com";
+}
 async function registerAccount(puf_token) {
   const data = {
     pufToken: puf_token,
-    email: "",
+    email: generateEmail(),
     firstName: generateUsername(),
+    lastName: generateUsername(),
     phone: "",
     settings: { emailAndPass: true, pufResponse: true },
   };

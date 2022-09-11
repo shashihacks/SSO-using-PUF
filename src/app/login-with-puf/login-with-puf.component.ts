@@ -20,7 +20,9 @@ export class LoginWithPufComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
+    private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+    console.log("login with loaded")
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -32,8 +34,8 @@ export class LoginWithPufComponent implements OnInit {
         this.router.navigate(['/home'])
     })
 
-
     this.route.queryParams.subscribe(params => {
+
       const { redirectUrl, clientId } = params
       console.log(redirectUrl, clientId)
       if (redirectUrl && clientId)
@@ -51,7 +53,7 @@ export class LoginWithPufComponent implements OnInit {
     console.log(this.f)
     console.log(this.f.token.value)
     const token = this.f.token.value
-    let response = this.authenticationService.loginWithPuf(token)
+    let response = this.authenticationService.loginWithPuf(token, this.reDirection)
 
     this.form.reset()
 

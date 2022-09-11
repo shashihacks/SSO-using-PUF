@@ -70,8 +70,8 @@ export class AuthenticationService {
         })
     }
 
-    loginWithPuf(puf_token: string) {
-
+    loginWithPuf(puf_token: string, redirection) {
+        console.log("trying with redirection", redirection)
         return this.http.post(`${environment.apiUrl}/api/login-with-puf`, { "puf_token": puf_token }).subscribe(response => {
             console.log(response, "from server")
             localStorage.setItem('accessToken', response['accessToken']);
@@ -94,6 +94,9 @@ export class AuthenticationService {
             console.log(response, "from server")
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem('redirectUrl')
+            localStorage.removeItem('isRedirection')
+            localStorage.removeItem('clientId')
 
             this.currentUserSubject.next(null);
             this.router.navigateByUrl('/login')

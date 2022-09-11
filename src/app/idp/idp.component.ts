@@ -15,6 +15,7 @@ export class IdpComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService) {
+    console.log("IDP loaded")
 
     this.route.queryParams.subscribe(params => {
       console.log(params)
@@ -32,8 +33,10 @@ export class IdpComponent implements OnInit {
               this.accountService.getUserData().subscribe(data => {
                 let firstName = data['firstName']
                 let lastName = data['lastName']
-                console.log(data)
+                console.log(data, "data in idp?")
                 window.location.href = redirectUrl + '?firstName=' + firstName + '&lastName=' + lastName + '&email=' + data['email'] + '&HMAC=' + data['HMAC']
+                //  localStorage.setItem('redirectionObject', window.location.href)
+                //  localStorage.setItem('isRedirected', '1')
               })
 
             }
@@ -64,6 +67,13 @@ export class IdpComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let redirectionObject = JSON.parse(localStorage.getItem('redirection'))
+    let isRedirected = JSON.parse(localStorage.getItem('isRedirected'))
+    if (redirectionObject && isRedirected == 1) {
+      console.log("I was hit")
+      localStorage.removeItem(isRedirected)
+      window.location.href = redirectionObject
+    }
   }
 
 }

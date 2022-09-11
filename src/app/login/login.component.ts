@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     public authenticationService: AuthenticationService,
 
   ) {
-
+    console.log("Login loaded")
   }
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -54,8 +54,14 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const { redirectUrl, clientId } = params
       console.log(redirectUrl, clientId)
-      if (redirectUrl && clientId)
+      if (redirectUrl && clientId) {
+        localStorage.setItem('redirectUrl', redirectUrl)
+        localStorage.setItem('clientId', clientId)
+        localStorage.setItem('isRedirected', '1')
         this.reDirection = true
+      }
+
+
     })
 
   }
@@ -87,8 +93,11 @@ export class LoginComponent implements OnInit {
                   let lastName = data['lastName']
 
                   console.log(data)
-                  window.location.href = redirectUrl + '?firstName=' + firstName + '&lastName=' + lastName + '&email=' + data['email'] + '&HMAC=' + data['HMAC']
+                  let userData = redirectUrl + '?firstName=' + firstName + '&lastName=' + lastName + '&email=' + data['email'] + '&HMAC=' + data['HMAC']
+                  localStorage.setItem('redirectObject', userData)
+                  localStorage.setItem('isRedirected', '1')
 
+                  window.location.href = userData
                 })
               }
               else {

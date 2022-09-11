@@ -45,9 +45,13 @@ const updateUser = async (req, res) => {
   console.log("hit /updateuser");
   console.log(req.body.user);
   let updateUserObject = req.body.user;
-  const { email } = req.body.user;
 
-  await db.collection("users").doc(email).update(updateUserObject);
+  const { email, pufToken } = req.body.user;
+  if (pufToken) {
+    await db.collection("users").doc(pufToken).update(updateUserObject);
+  } else {
+    await db.collection("users").doc(email).update(updateUserObject);
+  }
   res.send({ sendStatus: 201, text: "User update success" });
 };
 
